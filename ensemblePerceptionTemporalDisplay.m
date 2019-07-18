@@ -49,7 +49,7 @@ xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_im
 
 % Select random oranges from the image index vector "num_oranges" using
 % function "randsample"
-rand_oranges = randsample(total_Images, total_Images); 
+rand_images = randsample(total_Images, total_Images); 
 
 Screen('DrawTextures', window, tid(rand_oranges), [], xy_rect);
 Screen('Flip', window);
