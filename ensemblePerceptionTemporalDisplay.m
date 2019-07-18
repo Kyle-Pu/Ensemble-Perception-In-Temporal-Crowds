@@ -51,7 +51,7 @@ xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_im
 % function "randsample"
 rand_images = randsample(total_Images, total_Images); 
 
-Screen('DrawTextures', window, tid(rand_oranges), [], xy_rect);
+Screen('DrawTextures', window, tid(rand_images), [], xy_rect);
 Screen('Flip', window);
 WaitSecs(5);
  
