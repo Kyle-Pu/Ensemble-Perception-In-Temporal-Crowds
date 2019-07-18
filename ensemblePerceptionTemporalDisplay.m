@@ -15,7 +15,6 @@ y_center = window_h/2;
 
 %% Determining Location on Screen to Display Images
 xVector = linspace(807, window_w-807, 2);
-%xVector = linspace(850, window_w - 850, 2);
 yVector = linspace(385, window_h-385, 2);
 [x, y] = meshgrid(xVector, yVector);
 
