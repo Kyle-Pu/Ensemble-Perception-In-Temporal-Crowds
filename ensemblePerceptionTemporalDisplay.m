@@ -32,6 +32,9 @@ for i = 1 : total_Images
     
     tmp_bmp = imread("/home/kylepu/Dropbox/Tuesday/Stimuli/" + num2str(i) + ".png");
     tmp_bmp(:, :, 4) = Mask_Plain;
+    
+    Screen('DrawText', window, 'Loading...', x_center, y_center-25); 
+    Screen('DrawText', window, [int2str(int16(i*100/147)) '%'], x_center, y_center+25);
      
     % Make texture of the stimuli matrix
     tid(i) = Screen('MakeTexture', window, tmp_bmp);
