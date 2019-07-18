@@ -1,0 +1,58 @@
+% Cleaning Up the Workspace
+clear all; close all;
+ 
+%% Setting Up the Screen
+Screen('Preference', 'SkipSyncTests', 1);
+RandStream.setGlobalStream(RandStream('mt19937ar','seed',sum(100*clock))); % Create a new random stream
+[window, rect] = Screen('OpenWindow', 0); % Opening the screen
+Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); % Setting up transparency
+ 
+%% Window Sizing and Coordinates for Center
+window_w = rect(3);
+window_h = rect(4);
+x_center = window_w/2;
+y_center = window_h/2;
+
+%% Determining Location on Screen to Display Images
+xVector = linspace(850, window_w - 850, 2);
+yVector = linspace(450, window_h - 450, 2)
+[x, y] = meshgrid(xVector, yVector);
+
+%% Transparency Mask to Filter Excess Stimuli
+Mask_Plain = imread('/home/kylepu/Dropbox/Tuesday/Stimuli/mask.png');
+Mask_Plain = Mask_Plain(:, :, 1); % Only need one color channel of a grayscale image
+ 
+
+Loading Stimuli
+tid = zeros(1,4);  % Hold textures
+
+for i = 1:4
+    
+    tmp_bmp = imread("/home/kylepu/Dropbox/Tuesday/Stimuli/" + num2str(i) + ".png");
+    tmp_bmp(:, :, 4) = Mask_Plain;
+     
+    % Make texture of the stimuli matrix
+    tid(i) = Screen('MakeTexture', window, tmp_bmp);
+    
+end
+
+image_size = size(tmp_bmp);
+w_img =  image_size(2); % image width
+h_img =  image_size(1); % image height
+
+xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_img / 2];
+
+num_oranges = 4
+
+% Total number of display points for the grid
+ 
+% Select random oranges from the image index vector "num_oranges" using
+% function "randsample"
+rand_oranges = randsample(num_oranges, num_oranges); 
+
+Screen('DrawTextures', window, tid(rand_oranges), [], xy_rect);
+Screen('Flip', window);
+WaitSecs(5);
+ 
+Screen('CloseAll');
+
