@@ -18,8 +18,10 @@ xVector = linspace(850, window_w - 850, 2);
 yVector = linspace(450, window_h - 450, 2)
 [x, y] = meshgrid(xVector, yVector);
 
+cd('Face_Stimuli');
+
 %% Transparency Mask to Filter Excess Stimuli
-Mask_Plain = imread('/home/kylepu/Dropbox/Tuesday/Stimuli/mask.png');
+Mask_Plain = imread('mask.png');
 Mask_Plain = Mask_Plain(:, :, 1); % Only need one color channel of a grayscale image
 
 %% Parameter Settings
@@ -30,7 +32,7 @@ tid = zeros(1, total_Images);  % Hold textures
 
 for i = 1 : total_Images
     
-    tmp_bmp = imread("/home/kylepu/Dropbox/Tuesday/Stimuli/" + num2str(i) + ".png");
+    tmp_bmp = imread("num2str(i)" + ".png");
     tmp_bmp(:, :, 4) = Mask_Plain;
     
     Screen('DrawText', window, 'Loading...', x_center, y_center-25); 
