@@ -1,5 +1,8 @@
 # Ensemble-Perception-In-Temporal-Crowds
 
+## Warning
+Update path to files before running.
+
 ## To Do
 - [ ] Clicking Input
 - [ ] Automatic Positioning Based on Picture Size
