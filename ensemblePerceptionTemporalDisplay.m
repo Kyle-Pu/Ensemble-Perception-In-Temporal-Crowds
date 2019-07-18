@@ -21,12 +21,14 @@ yVector = linspace(450, window_h - 450, 2)
 %% Transparency Mask to Filter Excess Stimuli
 Mask_Plain = imread('/home/kylepu/Dropbox/Tuesday/Stimuli/mask.png');
 Mask_Plain = Mask_Plain(:, :, 1); % Only need one color channel of a grayscale image
- 
 
-Loading Stimuli
-tid = zeros(1,4);  % Hold textures
+%% Parameter Settings
+total_Images = 4; % Number of images in each scene
 
-for i = 1:4
+%% Loading Textures Into tid
+tid = zeros(1, total_Images);  % Hold textures
+
+for i = 1 : total_Images
     
     tmp_bmp = imread("/home/kylepu/Dropbox/Tuesday/Stimuli/" + num2str(i) + ".png");
     tmp_bmp(:, :, 4) = Mask_Plain;
@@ -42,13 +44,9 @@ h_img =  image_size(1); % image height
 
 xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_img / 2];
 
-num_oranges = 4
-
-% Total number of display points for the grid
- 
 % Select random oranges from the image index vector "num_oranges" using
 % function "randsample"
-rand_oranges = randsample(num_oranges, num_oranges); 
+rand_oranges = randsample(total_Images, total_Images); 
 
 Screen('DrawTextures', window, tid(rand_oranges), [], xy_rect);
 Screen('Flip', window);
