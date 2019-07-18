@@ -56,4 +56,3 @@ Screen('Flip', window);
 WaitSecs(5);
  
 Screen('CloseAll');
-
