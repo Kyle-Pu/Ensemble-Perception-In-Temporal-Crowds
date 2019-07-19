@@ -49,8 +49,64 @@ rand_images = randsample(total_Images, num_In_Scene);
 
 Screen('DrawTextures', window, tid(rand_images), [], xy_rect);
 Screen('Flip', window);
-WaitSecs(5);
-
+WaitSecs(2);
+Screen('Flip', window);
 cd('../');
- 
+
+%% Cole's Part: getting clicks and screen for clicks
+
+% correct_area_in_image = ... (need to specify for a given randomly
+% generated crowd, what index the outlier is at -- should be done by
+% whoever is doing the randomization thingy) -- specify in the first index,
+% the outer x coordinate of the grid (i.e. the far left or the far right
+% side if the correct outlier is on the left or right respectively, and in
+% the second index specify the outer y coordinate of the grid (i.e. the far
+% bottom and the far top coordinate if the correct outlier is in the top or
+% bottom respectively)
+
+clicking_grid = imread('clickinggrid.png');
+xy_center = [x_center-302,y_center-302,x_center+302,y_center+302];
+makegrid = Screen('MakeTexture', window, clicking_grid);
+Screen('DrawTextures', window, makegrid, [], xy_center);
+Screen('Flip', window);
+tf = 0;
+x=0;
+y=0;
+while tf == 0
+    [x,y,buttons]=GetMouse(); %gets coordinates of the button press when it is done
+    tf=any(buttons); %sets to 1 if a button was pressed
+    WaitSecs(.01);
+end
+if ((x<correct_area_in_image(1) && x>x_center) || (x>correct_area_in_image(1)) && (x<x_center)) && ((y<correct_area_in_image(2) && y>y_center) || (y>correct_area_in_image(2) && y<y_center)) %if the person clicked on the correct outlier
+    accuracystorage(crowdnum, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
+else
+    accuracystorage(crowdnum, 2) = 0;%record bad click
+end
+% then just repeat the loop that everything is in
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Screen('CloseAll');
