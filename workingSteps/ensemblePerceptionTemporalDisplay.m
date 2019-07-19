@@ -41,7 +41,7 @@ h_img =  image_size(1) / 2; % image height
 startingX = x_center - w_img / 2;
 startingY = y_center - h_img / 2;
 xVector = linspace(startingX, window_w-startingX, 2);
-yVector = linspace(startingY, window_h-startingY, 2);
+yVector = linspace(startingY, window_h-starting, 2);
 [x, y] = meshgrid(xVector, yVector);
 
 
