@@ -47,19 +47,8 @@ for i = 1 : total_Images
     Screen('Flip', window); % Display text
 end
 
-for k = 1 : trial_num
-    for r = 1:4
-    range = 149-(k*special_freq);
-    starting_index = randi(range); 
-    %trial_num is the number of faces they will see in one round (Ex.6)
-    
-        if k == special % this is the high variance square
-        img_show = imread([num2str(starting_index + (k*special_freq)) '.PNG']);
-        else %this is the other low variance square
-        img_show = imread([num2str(starting_index + (k*reg_freq)) '.PNG']);
-        end
-        
-    end
+A = 149-(4*special_freq);
+B = 149-(4*reg_freq);
 
 image_size = size(tmp_bmp);
 w_img =  image_size(2)/2; % image width
@@ -67,12 +56,26 @@ h_img =  image_size(1)/2; % image height
 
 xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_img / 2];
 
-num_In_Scene = 4; % The number of images we display in each scene
-rand_images = randsample(total_Images, num_In_Scene); 
+for k = 1 : trial_num
+    %Screen('DrawText', window, trial_num, x_center, y_center);
+    starting_index_spec = randi(A); 
+    
+    for r = 1:4
+        starting_index_norm = randi(B);
+        if r == special % this is the high variance square
+            img_show{r}= starting_index_spec + (r*special_freq);
+        else %this is the other low variance square
+            img_show{r}= starting_index_norm + (r*reg_freq);
+        end
+    end
 
-Screen('DrawTextures', window, img_show, [], xy_rect);
+
+%num_In_Scene = 4; % The number of images we display in each scene
+%rand_images = randsample(total_Images, num_In_Scene); 
+Screen('DrawTextures', window, tid(img_show{r}), [], xy_rect);
 Screen('Flip', window);
-WaitSecs(5);
+
+WaitSecs(2);
 end
 
 cd('../');
