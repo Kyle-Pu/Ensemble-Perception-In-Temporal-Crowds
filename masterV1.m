@@ -51,15 +51,15 @@ xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_im
 num_In_Scene = 4; % The number of images we display in each scene
 
 %% Non-Outlier Images
-regImages = randperm(total_Images - 2, 4) + 2);  % Generate average morph for each of the 3 regular images in each scene
-order = randperm(6);  % Random order to display morphs around the average for each of the 3 regular images in each scene
+regImages = randperm(total_Images - 3, 4) + 3;  % Generate average morph for each of the 3 regular images in each scene
+order = randperm(6) - 3;  % Random order to display morphs around the average for each of the 3 regular images in each scene
 
 %% Display the Images
 for c = 1 : 6
 
-	rand_images = randsample(total_Images, num_In_Scene);  % Get 4 random images from our total set of 147 images
-	
-	Screen('DrawTextures', window, tid(regImages), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
+	adjustedVals = [regImages(1) + order(c), regImages(2) + order(c), regImages(3) + order(c), regImages(4) + order(c)];
+
+	Screen('DrawTextures', window, tid(adjustedVals), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 	DrawFormattedText(window,'+','center','center',[0 0 0]);
 	Screen('Flip', window);
 	WaitSecs(5);
