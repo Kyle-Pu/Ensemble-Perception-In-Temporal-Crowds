@@ -5,6 +5,8 @@ Our research experiment is on ensemble perception in temporal crowds with a focu
 
 ## To Do
 - [x] Clicking Input
-- [ ] Automatic Positioning Based on Picture Size
+- [x] Automatic Positioning Based on Picture Size
 - [x] Automate all loops (right now it's hard coded for some for loops)
 - [x] Take out path names
+- [ ] For each picture in the scene, morph randomly by first choosing an average and then displaying morphs around it
+- [ ] Make one of the pictures an outlier and change its variance
