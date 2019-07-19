@@ -48,12 +48,12 @@ yVector = linspace(startingY, window_h-startingY, 2);
 
 %% Image Location and Organization
 xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_img / 2];  % Generate a matrix of where to position the images
-
 num_In_Scene = 4; % The number of images we display in each scene
-rand_images = randsample(total_Images, num_In_Scene);  % Get 4 random images from our total set of 147 images
 
 %% Display the Images
 for c = 1 : 6
+
+	rand_images = randsample(total_Images, num_In_Scene);  % Get 4 random images from our total set of 147 images
 
 	Screen('DrawTextures', window, tid(rand_images), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 	DrawFormattedText(window,'+','center','center',[0 0 0]);
@@ -89,11 +89,11 @@ for c = 1 : 6
 	    WaitSecs(.01);
 	end
 
-	if ((x<correct_area_in_image(1) && x>x_center) || (x>correct_area_in_image(1)) && (x<x_center)) && ((y<correct_area_in_image(2) && y>y_center) || (y>correct_area_in_image(2) && y<y_center)) %if the person clicked on the correct outlier
-	    accuracystorage(crowdnum, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
-	else
-	    accuracystorage(crowdnum, 2) = 0;%record bad click
-	end
+	%if ((x<correct_area_in_image(1) && x>x_center) || (x>correct_area_in_image(1)) && (x<x_center)) && ((y<correct_area_in_image(2) && y>y_center) || (y>correct_area_in_image(2) && y<y_center)) %if the person clicked on the correct outlier
+	%    accuracystorage(crowdnum, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
+	%else
+	%    accuracystorage(crowdnum, 2) = 0;%record bad click
+	%end
 	% then just repeat the loop that everything is in
 
 end
