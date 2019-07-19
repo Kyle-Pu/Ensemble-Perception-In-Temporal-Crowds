@@ -21,7 +21,7 @@ cd('Face_Stimuli');
 
 %% Transparency Mask to Filter Excess Stimuli
 Mask_Plain = imread('mask.png');
-Mask_Plain = Mask_Plain(:, :, 1); % Only need one color channel of a grayscale image since all channels are the same
+Mask_Plain = 255 - Mask_Plain(:, :, 1); % Only need one color channel of a grayscale image since all channels are the same
 
 %% Parameter Settings
 total_Images = 4; % Number of images in our dataset

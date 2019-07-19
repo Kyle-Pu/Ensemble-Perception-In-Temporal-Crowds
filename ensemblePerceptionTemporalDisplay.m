@@ -22,7 +22,8 @@ cd('Face_Stimuli');
 
 %% Transparency Mask to Filter Excess Stimuli
 Mask_Plain = imread('mask.png');
-Mask_Plain = Mask_Plain(:, :, 1); % Only need one color channel of a grayscale image since all channels are the same
+Mask_Plain = 255 - Mask_Plain(:, :, 1); % Only need one color channel of a grayscale image since all channels are the same
+
 
 %% Parameter Settings
 total_Images = 147; % Number of images in our dataset
@@ -32,7 +33,7 @@ tid = zeros(1, total_Images);  % Holds textures
 
 for i = 1 : total_Images
     tmp_bmp = imread([num2str(i) '.PNG']);
-    %tmp_bmp(:,:,4) = Mask_Plain;
+    tmp_bmp(:,:,4) = Mask_Plain;
     tid(i) = Screen('MakeTexture', window, tmp_bmp);
     Screen('DrawText', window, 'Loading...', x_center, y_center-25); % Write text to confirm loading of images
     Screen('DrawText', window, [int2str(int16(i*100/147)) '%'], x_center, y_center+25); % Write text to confirm percentage complete
