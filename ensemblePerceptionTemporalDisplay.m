@@ -13,23 +13,15 @@ window_h = rect(4);
 x_center = window_w/2;
 y_center = window_h/2;
 
-%% Determining Location on Screen to Display Images
-xVector = linspace(807, window_w-807, 2);
-yVector = linspace(385, window_h-385, 2);
-[x, y] = meshgrid(xVector, yVector);
+%% Loading Textures Into tid
+total_Images = 147; % Number of images in our dataset
+tid = zeros(1, total_Images);  % Holds textures
 
 cd('Face_Stimuli');
 
 %% Transparency Mask to Filter Excess Stimuli
 Mask_Plain = imread('mask.png');
 Mask_Plain = 255 - Mask_Plain(:, :, 1); % Only need one color channel of a grayscale image since all channels are the same
-
-
-%% Parameter Settings
-total_Images = 147; % Number of images in our dataset
-
-%% Loading Textures Into tid
-tid = zeros(1, total_Images);  % Holds textures
 
 for i = 1 : total_Images
     tmp_bmp = imread([num2str(i) '.PNG']);
@@ -43,6 +35,17 @@ end
 image_size = size(tmp_bmp);
 w_img =  image_size(2) / 2; % image width
 h_img =  image_size(1) / 2; % image height
+
+
+%% Determining Location on Screen to Display Images
+startingX = x_center - w_img / 2;
+startingY = y_center - h_img / 2;
+xVector = linspace(startingX, window_w-startingX, 2);
+yVector = linspace(startingY, window_h-startingY, 2);
+[x, y] = meshgrid(xVector, yVector);
+
+
+%% Parameter Settings
 
 xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_img / 2];
 
