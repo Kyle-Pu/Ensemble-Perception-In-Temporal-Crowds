@@ -62,7 +62,9 @@ for c = 1 : 6
 	Screen('DrawTextures', window, tid(adjustedVals), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 	DrawFormattedText(window,'+','center','center',[0 0 0]);
 	Screen('Flip', window);
-	WaitSecs(5);
+	WaitSecs(0.5);
+
+end
 
 	%% Cole's Part: getting clicks and screen for clicks
 
@@ -99,9 +101,6 @@ for c = 1 : 6
 	%    accuracystorage(crowdnum, 2) = 0;%record bad click
 	%end
 	% then just repeat the loop that everything is in
-
-end
-
  
 
 
