@@ -49,13 +49,14 @@ end
 
 for k = 1 : trial_num
     for r = 1:4
-    starting_index = randi(149-(i*special_freq)); 
+    range = 149-(k*special_freq);
+    starting_index = randi(range); 
     %trial_num is the number of faces they will see in one round (Ex.6)
     
-        if i == special % this is the high variance square
-        img_show = imread([num2str(starting_index + (i*special_freq)) '.PNG']);
+        if k == special % this is the high variance square
+        img_show = imread([num2str(starting_index + (k*special_freq)) '.PNG']);
         else %this is the other low variance square
-        img_show = imread([num2str(starting_index + (i*reg_freq)) '.PNG']);
+        img_show = imread([num2str(starting_index + (k*reg_freq)) '.PNG']);
         end
         
     end
