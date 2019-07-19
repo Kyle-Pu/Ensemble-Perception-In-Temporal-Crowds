@@ -64,8 +64,9 @@ for c = 1 : 6
 	Screen('Flip', window);
 	WaitSecs(0.5);
 
-end
+	if c == 6
 
+		
 	%% Cole's Part: getting clicks and screen for clicks
 
 	% correct_area_in_image = ... (need to specify for a given randomly
@@ -198,6 +199,11 @@ end
  
 
 WaitSecs(2);
+
+	end
+
+end
+
 
 
 Screen('CloseAll');
