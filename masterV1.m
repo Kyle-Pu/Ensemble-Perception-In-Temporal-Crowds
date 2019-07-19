@@ -186,15 +186,15 @@ while looping_again == 0
 
 end
 
-if userchoice_variance == correct_variance
+%if userchoice_variance == correct_variance
 
-    accuracy_storage(crowdnum, 3) = 1;
+%    accuracy_storage(crowdnum, 3) = 1;
 
-else
+%else
 
-    accuracy_storage(crowdnum, 3) = 0;
+%    accuracy_storage(crowdnum, 3) = 0;
 
-end
+%end
 
  
 
