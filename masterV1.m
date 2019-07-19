@@ -44,20 +44,19 @@ xVector = linspace(startingX, window_w-startingX, 2);
 yVector = linspace(startingY, window_h-startingY, 2);
 [x, y] = meshgrid(xVector, yVector);
 
-
-%% Parameter Settings
-
-xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_img / 2];
+%% Image Location and Organization
+xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_img / 2];  % Generate a matrix of where to position the images
 
 num_In_Scene = 4; % The number of images we display in each scene
-rand_images = randsample(total_Images, num_In_Scene); 
+rand_images = randsample(total_Images, num_In_Scene);  % Get 4 random images from our total set of 147 images
 
-Screen('DrawTextures', window, tid(rand_images), [], xy_rect);
+%% Display the Images
+Screen('DrawTextures', window, tid(rand_images), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 DrawFormattedText(window,'+','center','center',[0 0 0]);
 Screen('Flip', window);
 WaitSecs(5);
 
-cd('../');
+cd('../');  %% No need to stay int he images directory any longer
  
 %% Cole's Part: getting clicks and screen for clicks
 
