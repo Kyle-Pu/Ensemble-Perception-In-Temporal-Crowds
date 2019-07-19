@@ -103,5 +103,101 @@ end
 	% then just repeat the loop that everything is in
  
 
+%% Getting click for high/low variance part thingy doob
+
+dimensions_of_buttons = [137, 103];
+
+ 
+
+xy_high_center = [x_center-dimensions_of_buttons(1), y_center-dimensions_of_buttons(2)-150, x_center+dimensions_of_buttons(1), y_center+dimensions_of_buttons(2)-150];
+
+xy_low_center = [x_center-dimensions_of_buttons(1), y_center-dimensions_of_buttons(2)+150, x_center+dimensions_of_buttons(1), y_center+dimensions_of_buttons(2)+150];
+
+ 
+
+ 
+
+DrawFormattedText(window,'Was the variance \n of this outlier set \n high or low?','center',100,[0 0 0]);
+
+High_button = imread('High Button.png');
+
+Low_button = imread('Low Button.png');
+
+makebuttonlayout_high = Screen('MakeTexture', window, High_button);
+
+makebuttonlayout_low = Screen('MakeTexture', window, Low_button);
+
+Screen('DrawTextures', window, makebuttonlayout_high, [], xy_high_center);
+
+Screen('DrawTextures', window, makebuttonlayout_low, [], xy_low_center);
+
+Screen('Flip', window);
+
+tff = 0;
+
+looping_again = 0;
+
+while looping_again == 0
+
+    xx=0;
+
+    yy=0;
+
+    userchoice_variance = 0;
+
+    while tff == 0
+
+        [xx,yy,buttons]=GetMouse(); %gets coordinates of the button press when it is done
+
+        tff=any(buttons); %sets to 1 if a button was pressed
+
+        WaitSecs(.01);
+
+    end
+
+    if (xx > xy_high_center(1) && xx < xy_high_center(3) && yy > xy_high_center(2) && yy < xy_high_center(4))
+
+        userchoice_variance = 1; % setting userchoise_variance equal to 1 if the high button is pressed
+
+        looping_again = 1; %breaking out of loop
+
+        %DrawFormattedText(window,'high was pressed?','center',700,[0 0 0]);
+
+        %Screen('Flip', window);
+
+    elseif (xx > xy_low_center(1) && xx < xy_low_center(3) && yy > xy_low_center(2) && yy < xy_low_center(4))
+
+        userchoice_variance = 2; % setting userchoise_variance equal to 2 if the low button is pressed
+
+        looping_again = 1; %breaking out of loop
+
+        %DrawFormattedText(window,'low was pressed?','center',700,[0 0 0]);
+
+        %Screen('Flip', window);
+
+    else
+
+        tff = 0 %going back into the "is the user clicking?" loop once the looping_again while loop is repeated
+
+        looping_again = 0;
+
+    end
+
+end
+
+if userchoice_variance == correct_variance
+
+    accuracy_storage(crowdnum, 3) = 1;
+
+else
+
+    accuracy_storage(crowdnum, 3) = 0;
+
+end
+
+ 
+
+WaitSecs(2);
+
 
 Screen('CloseAll');
