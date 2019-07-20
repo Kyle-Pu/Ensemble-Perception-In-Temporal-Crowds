@@ -6,6 +6,7 @@ Our research experiment is on ensemble perception in temporal crowds with a focu
 ## To Do
 - [ ] Add variance/outlier
 - [ ] Adjust the morphing
+- [ ] Ignore mouse clicks outside of the grid
 - [x] Clicking Input
 - [x] Automatic Positioning Based on Picture Size
 - [x] Automate all loops (right now it's hard coded for some for loops)
