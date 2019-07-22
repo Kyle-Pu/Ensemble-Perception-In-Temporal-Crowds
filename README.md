@@ -14,7 +14,7 @@ Our research experiment is on ensemble perception in temporal crowds with a focu
 - [x] For each picture in the scene, morph randomly by first choosing an average and then displaying morphs around it
 - [x] Make one of the pictures an outlier and change its variance
 - [ ] Welcome screen with participant input
-- [ ] Breaks
+- [x] Breaks
 - [ ] Subject Number
 - [ ] Participant Initials
 - [ ] Age
