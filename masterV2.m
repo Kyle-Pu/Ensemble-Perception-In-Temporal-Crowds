@@ -1,4 +1,3 @@
-% Cleaning Up the Workspace
 clear all; close all;
  
 %% Setting Up the Screen
@@ -134,7 +133,7 @@ for i = 1 : trialnum
 	% the second index specify the outer y coordinate of the grid (i.e. the far
 	% bottom and the far top coordinate if the correct outlier is in the top or
 	% bottom respectively)
-	size_of_square_image = 302; %enter the size of one of the sides of one of the images
+	size_of_square_image = 302; %enter the size of one of the sides of one of the images/grid squares
     if outlier == 1
         correct_area_in_image = [-size_of_square_image, 0, 0, size_of_square_image]; % top left one
     elseif outlier == 2
@@ -160,15 +159,18 @@ for i = 1 : trialnum
 	    [x,y,buttons]=GetMouse(); %gets coordinates of the button press when it is done
 	    tf=any(buttons); %sets to 1 if a button was pressed
 	    WaitSecs(.01);
-    end
+    
 
     if (x>correct_area_in_image(1) && x<correct_area_in_image(3)) && (y>correct_area_in_image(2) && y<correct_area_in_image(4)) %if the person clicked on the correct outlier
         accuracystorage(i, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
     else
         if (x>xy_center(1) && y>xy_center(2) && x<xy_center(3) && y<xy_center(4))
             accuracystorage(i, 2) = 0;%record bad click
+        else
+            tf = 0;
         end
-	end
+    end
+    end
  WaitSecs(.5);
 
 %% Getting click for high/low variance part thingy doob
@@ -300,4 +302,3 @@ function coloredImg = colorMyImage(img)
 	blueChannel(background) = 255; % Change the new image's background to all white
 	coloredImg = cat(3, img, img, blueChannel);  % Set the blue channel to activate
 end
-
