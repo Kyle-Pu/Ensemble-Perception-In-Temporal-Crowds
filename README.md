@@ -13,3 +13,12 @@ Our research experiment is on ensemble perception in temporal crowds with a focu
 - [x] Take out path names
 - [x] For each picture in the scene, morph randomly by first choosing an average and then displaying morphs around it
 - [x] Make one of the pictures an outlier and change its variance
+- [ ] Welcome screen with participant input
+- [ ] Breaks
+- [ ] Subject Number
+- [ ] Participant Initials
+- [ ] Age
+- [ ] Gender
+- [ ] Handedness
+- [ ] Name
+- [ ] Save data in a results folder with their number AND initials
