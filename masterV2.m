@@ -94,6 +94,7 @@ for i = 1 : trialnum
 %% Slightly cleaner version of the code above (I think it should work the same)
 adjustedVals = zeros(1, 4);  % Initialize outside of loop so MATLAB doesn't have to copy elements and resize matrix at every iteration
 
+for count = 1 : trialnum
     if low_or_high == 1 %low as outlier
 	
 	for i = 1 : size(adjustedVals, 2)
@@ -111,7 +112,7 @@ adjustedVals = zeros(1, 4);  % Initialize outside of loop so MATLAB doesn't have
 	adjustedVals(outlier) = regImages(i) + highRange * i;
 
     end
-
+end
 
 
     for k = 1:4
