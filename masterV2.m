@@ -169,7 +169,7 @@ for i = 1 : trialnum
             accuracystorage(i, 2) = 0;%record bad click
         end
 	end
- 
+ WaitSecs(.5);
 
 %% Getting click for high/low variance part thingy doob
 
