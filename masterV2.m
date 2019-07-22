@@ -174,23 +174,16 @@ xy_low_center = [x_center-dimensions_of_buttons(1), y_center-dimensions_of_butto
 
  
 
- 
 
-DrawFormattedText(window,'Was the variance \n of this outlier set \n high or low?','center',100,[0 0 0]);
 
-High_button = imread('High Button.png');
+High_button = rgb2gray(imread('High Button.png'));
+High_button = High_button(:, :, 1);
+Low_button = rgb2gray(imread('Low Button.png'));
+Low_button = Low_button(:, :, 1);
 
-Low_button = imread('Low Button.png');
+highButtonColored = colorMyImage(High_button);
+lowButtonColored = colorMyImage(Low_button);
 
-makebuttonlayout_high = Screen('MakeTexture', window, High_button);
-
-makebuttonlayout_low = Screen('MakeTexture', window, Low_button);
-
-Screen('DrawTextures', window, makebuttonlayout_high, [], xy_high_center);
-
-Screen('DrawTextures', window, makebuttonlayout_low, [], xy_low_center);
-
-Screen('Flip', window);
 
 tff = 0;
 
@@ -206,11 +199,35 @@ while looping_again == 0
 
     while tff == 0
 
+	DrawFormattedText(window,'Was the variance \n of this outlier set \n high or low?','center',100,[0 0 0]);
+
         [xx,yy,buttons]=GetMouse(); %gets coordinates of the button press when it is done
+
+	if (xx > xy_high_center(1) && xx < xy_high_center(3) && yy > xy_high_center(2) && yy < xy_high_center(4))
+		makebuttonlayout_high = Screen('MakeTexture', window, highButtonColored);
+	else
+		makebuttonlayout_high = Screen('MakeTexture', window, High_button);
+	end
+	
+	if (xx > xy_low_center(1) && xx < xy_low_center(3) && yy > xy_low_center(2) && yy < xy_low_center(4))
+		makebuttonlayout_low = Screen('MakeTexture', window, lowButtonColored);
+	else
+		makebuttonlayout_low = Screen('MakeTexture', window, Low_button);
+	end
+
+	
+
+	Screen('DrawTextures', window, makebuttonlayout_high, [], xy_high_center);
+
+	Screen('DrawTextures', window, makebuttonlayout_low, [], xy_low_center);
+
+	Screen('Flip', window);
+
 
         tff=any(buttons); %sets to 1 if a button was pressed
 
         WaitSecs(.01);
+
 
     end
 
@@ -256,7 +273,7 @@ end
 
  
 
-WaitSecs(2);
+WaitSecs(0.5);
 
 	end
 
@@ -267,5 +284,10 @@ end
 Screen('CloseAll');
 
     
-
+function coloredImg = colorMyImage(img)
+	background = img <= 200;  % Find pixels where the background of our white and black images is
+	blueChannel = img;  % Create a new color layer, we're using blue
+	blueChannel(background) = 255; % Change the new image's background to all white
+	coloredImg = cat(3, img, img, blueChannel);  % Set the blue channel to activate
+end
 
