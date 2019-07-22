@@ -65,6 +65,7 @@ outlier = randi(4); %picking which of the four is the outlier
 
 
 %% Display the Images
+%{
 for i = 1 : trialnum
 
     if low_or_high == 1 %low as outlier
@@ -88,7 +89,31 @@ for i = 1 : trialnum
             adjustedVals = [regImages(1) + lowRange*i, regImages(2) + lowRange*i, regImages(3) + lowRange*i, regImages(4) + highRange*i];
         end
     end
-    
+%}    
+
+%% Slightly cleaner version of the code above (I think it should work the same)
+adjustedVals = zeros(1, 4);  % Initialize outside of loop so MATLAB doesn't have to copy elements and resize matrix at every iteration
+
+    if low_or_high == 1 %low as outlier
+	
+	for i = 1 : size(adjustedVals, 2)
+		adjustedVals(i) = regImages(i) + highRange * i;
+	end        
+
+	adjustedVals(outlier) = regImages(i) + lowRange * i;
+
+    else %high as outlier
+
+	for i = 1 : size(adjustedVals, 2)
+		adjustedVals(i) = regImages(i) + lowRange * i;
+	end 
+
+	adjustedVals(outlier) = regImages(i) + highRange * i;
+
+    end
+
+
+
     for k = 1:4
         if adjustedVals(k) > total_Images
             adjustedVals(k) = adjustedVals(k) - total_Images;
