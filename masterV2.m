@@ -1,3 +1,4 @@
+
 % Cleaning Up the Workspace
 clear all; close all;
  
@@ -63,11 +64,11 @@ regImages = randperm(total_Images, 4);  % Generate average morph for each of the
 low_or_high = randi(2); %1 = low as outlier 2 = high as outlier
 outlier = randi(4); %picking which of the four is the outlier
 
+adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
 %% Display the Images
-%{
 for i = 1 : trialnum
-
+%{
     if low_or_high == 1 %low as outlier
         if outlier == 1
             adjustedVals = [regImages(1) + lowRange*i, regImages(2) + highRange*i, regImages(3) + highRange*i, regImages(4) + highRange*i];
@@ -89,44 +90,39 @@ for i = 1 : trialnum
             adjustedVals = [regImages(1) + lowRange*i, regImages(2) + lowRange*i, regImages(3) + lowRange*i, regImages(4) + highRange*i];
         end
     end
-%}    
-
-%% Slightly cleaner version of the code above (I think it should work the same)
-adjustedVals = zeros(1, 4);  % Initialize outside of loop so MATLAB doesn't have to copy elements and resize matrix at every iteration
-
-for count = 1 : trialnum
-
-
+%}   
+    
     if low_or_high == 1 %low as outlier
-	
-	for i = 1 : size(adjustedVals, 2)
-		adjustedVals(i) = regImages(i) + highRange * i;
-	end        
-
-	adjustedVals(outlier) = regImages(i) + lowRange * i;
-
+        
+        for val = 1 : size(adjustedVals, 2)
+            adjustedVals(val) = regImages(val) + highRange * i;
+        end
+        
+        adjustedVals(outlier) = regImages(outlier) + lowRange * i;
+        
     else %high as outlier
-
-	for i = 1 : size(adjustedVals, 2)
-		adjustedVals(i) = regImages(i) + lowRange * i;
-	end 
-
-	adjustedVals(outlier) = regImages(i) + highRange * i;
-
+        
+        for val = 1 : size(adjustedVals, 2)
+            adjustedVals(val) = regImages(val) + lowRange * i;
+        end
+        
+        adjustedVals(outlier) = regImages(outlier) + highRange * i;
+        
     end
-
-      for k = 1:4
-          if adjustedVals(k) > total_Images
-              adjustedVals(k) = adjustedVals(k) - total_Images;
-          end
-      end
+    
+    
+    for k = 1:4
+        if adjustedVals(k) > total_Images
+            adjustedVals(k) = adjustedVals(k) - total_Images;
+        end
+    end
     
 	Screen('DrawTextures', window, tid(adjustedVals), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 	DrawFormattedText(window,'+','center','center',[0 0 0]);
 	Screen('Flip', window);
 	WaitSecs(0.5);
 
-	if count == 6
+	if i == 6
 
 		
 	%% Cole's Part: getting clicks and screen for clicks
@@ -262,9 +258,14 @@ end
 
 WaitSecs(2);
 
-
 	end
+
 end
 
 
+
 Screen('CloseAll');
+
+    
+
+
