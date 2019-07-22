@@ -297,8 +297,14 @@ Screen('CloseAll');
 
     
 function coloredImg = colorMyImage(img)
-	background = img <= 200;  % Find pixels where the background of our white and black images is
+	
+	% Note: Use first two commented lines if you want to change the button background's color instead of the text and the button border's
+	%img = 255 - img;  % Invert the colors so the text is now white and the background is now black
+        %background = img <= 100; % Find the black background with a threshold of 100
+
+	background = img <= 200;  % Find the pixels of our background (the background is white)
 	blueChannel = img;  % Create a new color layer, we're using blue
 	blueChannel(background) = 255; % Change the new image's background to all white
 	coloredImg = cat(3, img, img, blueChannel);  % Set the blue channel to activate
+	
 end
