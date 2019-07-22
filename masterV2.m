@@ -95,6 +95,8 @@ for i = 1 : trialnum
 adjustedVals = zeros(1, 4);  % Initialize outside of loop so MATLAB doesn't have to copy elements and resize matrix at every iteration
 
 for count = 1 : trialnum
+
+
     if low_or_high == 1 %low as outlier
 	
 	for i = 1 : size(adjustedVals, 2)
@@ -112,21 +114,19 @@ for count = 1 : trialnum
 	adjustedVals(outlier) = regImages(i) + highRange * i;
 
     end
-end
 
-
-    for k = 1:4
-        if adjustedVals(k) > total_Images
-            adjustedVals(k) = adjustedVals(k) - total_Images;
-        end
-    end
+      for k = 1:4
+          if adjustedVals(k) > total_Images
+              adjustedVals(k) = adjustedVals(k) - total_Images;
+          end
+      end
     
 	Screen('DrawTextures', window, tid(adjustedVals), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 	DrawFormattedText(window,'+','center','center',[0 0 0]);
 	Screen('Flip', window);
 	WaitSecs(0.5);
 
-	if i == 6
+	if count == 6
 
 		
 	%% Cole's Part: getting clicks and screen for clicks
@@ -262,10 +262,9 @@ end
 
 WaitSecs(2);
 
+
 	end
-
 end
-
 
 
 Screen('CloseAll');
