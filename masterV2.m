@@ -1,4 +1,3 @@
-
 % Cleaning Up the Workspace
 clear all; close all;
  
@@ -136,7 +135,16 @@ for i = 1 : trialnum
 	% bottom and the far top coordinate if the correct outlier is in the top or
 	% bottom respectively)
 	size_of_square_image = 302; %enter the size of one of the sides of one of the images
-
+    if outlier == 1
+        correct_area_in_image = [-size_of_square_image, 0, 0, size_of_square_image]; % top left one
+    elseif outlier == 2
+        correct_area_in_image = [-size_of_square_image,-size_of_square_image, 0, 0]; % bottom left one
+    elseif outlier == 3
+        correct_area_in_image = [0,0, size_of_square_image,size_of_square_image]; % top right one
+    elseif outlier == 4
+        correct_area_in_image = [0,-size_of_square_image,size_of_square_image, 0]; % bottom right one
+    end
+    
 	clicking_grid = imread('clickinggrid.png');
 	xy_center = [x_center-size_of_square_image,y_center-size_of_square_image,x_center+size_of_square_image,y_center+size_of_square_image];
 	makegrid = Screen('MakeTexture', window, clicking_grid);
@@ -152,15 +160,16 @@ for i = 1 : trialnum
 	    [x,y,buttons]=GetMouse(); %gets coordinates of the button press when it is done
 	    tf=any(buttons); %sets to 1 if a button was pressed
 	    WaitSecs(.01);
-	end
+    end
 
-	%if ((x<correct_area_in_image(1) && x>x_center) || (x>correct_area_in_image(1)) && (x<x_center)) && ((y<correct_area_in_image(2) && y>y_center) || (y>correct_area_in_image(2) && y<y_center)) %if the person clicked on the correct outlier
-	%    accuracystorage(crowdnum, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
-	%else
-	%    accuracystorage(crowdnum, 2) = 0;%record bad click
-	%end
-	% then just repeat the loop that everything is in
- 
+    if (x>correct_area_in_image(1) && x<correct_area_in_image(3)) && (y>correct_area_in_image(2) && y<correct_area_in_image(4)) %if the person clicked on the correct outlier
+        accuracystorage(i, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
+    else
+        if (x>xy_center(1) && y>xy_center(2) && x<xy_center(3) && y<xy_center(4))
+            accuracystorage(i, 2) = 0;%record bad click
+        end
+	end
+ WaitSecs(.5);
 
 %% Getting click for high/low variance part thingy doob
 
@@ -253,7 +262,7 @@ while looping_again == 0
 
     else
 
-        tff = 0 %going back into the "is the user clicking?" loop once the looping_again while loop is repeated
+        tff = 0; %going back into the "is the user clicking?" loop once the looping_again while loop is repeated
 
         looping_again = 0;
 
@@ -261,23 +270,24 @@ while looping_again == 0
 
 end
 
-%if userchoice_variance == correct_variance
+if userchoice_variance == low_or_high
 
-%    accuracy_storage(crowdnum, 3) = 1;
+    accuracy_storage(i, 3) = 1;
 
-%else
+else
 
-%    accuracy_storage(crowdnum, 3) = 0;
+    accuracy_storage(i, 3) = 0;
 
-%end
+end
 
  
 
 WaitSecs(0.5);
+WaitSecs();
 
-	end
+    end
+    end
 
-end
 
 
 
