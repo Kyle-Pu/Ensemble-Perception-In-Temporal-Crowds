@@ -53,6 +53,7 @@ num_In_Scene = 4; % The number of images we display in each scene
 lowRange = 7; %the variance number for low variance
 highRange = 20; %the variance number for high variance
 trialnum = 6; %number of images shown in one loop
+round = 50;
 
 regImages = randperm(total_Images, 4);  % Generate average morph for each of the 3 regular images in each scene
 %regImages = randperm(total_Images - highRange*trialnum, 4);
@@ -65,30 +66,8 @@ outlier = randi(4); %picking which of the four is the outlier
 adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
 %% Display the Images
+for m = 1 : round
 for i = 1 : trialnum
-    %{
-    if low_or_high == 1 %low as outlier
-        if outlier == 1
-            adjustedVals = [regImages(1) + lowRange*i, regImages(2) + highRange*i, regImages(3) + highRange*i, regImages(4) + highRange*i];
-        elseif outlier == 2
-            adjustedVals = [regImages(1) + highRange*i, regImages(2) + lowRange*i, regImages(3) + highRange*i, regImages(4) + highRange*i];
-        elseif outlier == 3
-            adjustedVals = [regImages(1) + highRange*i, regImages(2) + highRange*i, regImages(3) + lowRange*i, regImages(4) + highRange*i];
-        elseif outlier == 4
-            adjustedVals = [regImages(1) + highRange*i, regImages(2) + highRange*i, regImages(3) + highRange*i, regImages(4) + lowRange*i];
-        end
-    else %high as outlier
-        if outlier == 1
-            adjustedVals = [regImages(1) + highRange*i, regImages(2) + lowRange*i, regImages(3) + lowRange*i, regImages(4) + lowRange*i];
-        elseif outlier == 2
-            adjustedVals = [regImages(1) + lowRange*i, regImages(2) + highRange*i, regImages(3) + lowRange*i, regImages(4) + lowRange*i];
-        elseif outlier == 3
-            adjustedVals = [regImages(1) + lowRange*i, regImages(2) + lowRange*i, regImages(3) + highRange*i, regImages(4) + lowRange*i];
-        elseif outlier == 4
-            adjustedVals = [regImages(1) + lowRange*i, regImages(2) + lowRange*i, regImages(3) + lowRange*i, regImages(4) + highRange*i];
-        end
-    end
-    %}
     
     if low_or_high == 1 %low as outlier
         
@@ -231,14 +210,20 @@ for i = 1 : trialnum
             end
         end
         if userchoice_variance == low_or_high
-            accuracy_storage(i, 3) = 1;
+            accuracy_storage(m, 3) = 1;
         else
-            accuracy_storage(i, 3) = 0;
+            accuracy_storage(m, 3) = 0;
         end
         
         WaitSecs(0.5);
         WaitSecs();
     end
+end
+
+    if mod(m,50) == 0
+        WaitSecs(120); %2 min break
+    end
+
 end
 
 Screen('CloseAll');
