@@ -1,5 +1,15 @@
 clear all; close all;
 
+%% Obtaining User Input
+Info = {'Initials','Gender [1=Male,2=Female,3=Other]','Age','Ethnicity', 'Handedness'};
+dlg_title = 'Subject Information';
+num_lines = 1;
+subject_info = inputdlg(Info,dlg_title,num_lines);
+
+existingData = load('subjectNumber.mat');
+subjectNumber = existingData.subjectNumber + 1;
+save('subjectNumber', 'subjectNumber');
+
 %% Setting Up the Screen
 Screen('Preference', 'SkipSyncTests', 1);
 RandStream.setGlobalStream(RandStream('mt19937ar','seed',sum(100*clock))); % Create a new random stream
@@ -31,7 +41,7 @@ for i = 1 : total_Images
     Screen('Flip', window); % Display text
 end
 
-cd('../');  %% Go up a directory, no need to stay int he images directory any longer
+cd('../'); % Go up a directory, no need to be in the images directory anymore
 
 image_size = size(tmp_bmp);
 w_img =  image_size(2) / 2; % image width
@@ -53,7 +63,6 @@ num_In_Scene = 4; % The number of images we display in each scene
 lowRange = 7; %the variance number for low variance
 highRange = 20; %the variance number for high variance
 trialnum = 6; %number of images shown in one loop
-round = 50;
 
 regImages = randperm(total_Images, 4);  % Generate average morph for each of the 3 regular images in each scene
 %regImages = randperm(total_Images - highRange*trialnum, 4);
@@ -65,10 +74,10 @@ outlier = randi(4); %picking which of the four is the outlier
 
 adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
+result = cell(1, 1); % Save user's results in here. Automate later! Right now, it's hard-coded as just 1 trial
+
 %% Display the Images
-for m = 1 : round
 for i = 1 : trialnum
-    
     if low_or_high == 1 %low as outlier
         
         for val = 1 : size(adjustedVals, 2)
@@ -116,21 +125,27 @@ for i = 1 : trialnum
         % bottom respectively)
         size_of_square_image = 302; %enter the size of one of the sides of one of the images/grid squares
         if outlier == 1
-            correct_area_in_image = [-size_of_square_image, 0, 0, size_of_square_image]; % top left one
+            correct_area_in_image = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image]; % top left one
         elseif outlier == 2
-            correct_area_in_image = [-size_of_square_image,-size_of_square_image, 0, 0]; % bottom left one
+            correct_area_in_image = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center]; % bottom left one
         elseif outlier == 3
-            correct_area_in_image = [0,0, size_of_square_image,size_of_square_image]; % top right one
+            correct_area_in_image = [x_center, y_center, x_center+size_of_square_image,y_center+size_of_square_image]; % top right one
         elseif outlier == 4
-            correct_area_in_image = [0,-size_of_square_image,size_of_square_image, 0]; % bottom right one
+            correct_area_in_image = [x_center,y_center-size_of_square_image,x_center+size_of_square_image, y_center]; % bottom right one
         end
         
         clicking_grid = imread('clickinggrid.png');
+        bluesquare = imread('blueSquare.png');
         xy_center = [x_center-size_of_square_image,y_center-size_of_square_image,x_center+size_of_square_image,y_center+size_of_square_image];
         makegrid = Screen('MakeTexture', window, clicking_grid);
+        makesquare = Screen('MakeTexture', window, bluesquare);
         Screen('DrawTextures', window, makegrid, [], xy_center);
         DrawFormattedText(window,'Please click on the location of the outlier','center',100,[0 0 0]);
         Screen('Flip', window);
+        square1 = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image];
+        square2 = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center];
+        square3 = [x_center,y_center, x_center+size_of_square_image,y_center+size_of_square_image];
+        square4 = [x_center,y_center-size_of_square_image,x_center+size_of_square_image, y_center];
         
         tf = 0;
         x=0;
@@ -140,8 +155,20 @@ for i = 1 : trialnum
             [x,y,buttons]=GetMouse(); %gets coordinates of the button press when it is done
             tf=any(buttons); %sets to 1 if a button was pressed
             WaitSecs(.01);
-            
-            
+            Screen('DrawTextures', window, makegrid, [], xy_center);
+            DrawFormattedText(window,'Please click on the location of the outlier','center',100,[0 0 0]);
+
+            if (x>square1(1) && x<square1(3) && y>square1(2) && y<square1(4))
+                Screen('DrawTextures', window, makesquare, [], square1);
+            elseif (x>square2(1) && x<square2(3) && y>square2(2) && y<square2(4))
+                Screen('DrawTextures', window, makesquare, [], square2);
+            elseif (x>square3(1) && x<square3(3) && y>square3(2) && y<square3(4))
+                Screen('DrawTextures', window, makesquare, [], square3);
+            elseif (x>square4(1) && x<square4(3) && y>square4(2) && y<square4(4))
+                Screen('DrawTextures', window, makesquare, [], square4);
+            end
+            Screen('Flip', window);
+
             if (x>correct_area_in_image(1) && x<correct_area_in_image(3)) && (y>correct_area_in_image(2) && y<correct_area_in_image(4)) %if the person clicked on the correct outlier
                 accuracystorage(i, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
             else
@@ -212,9 +239,9 @@ for i = 1 : trialnum
             end
         end
         if userchoice_variance == low_or_high
-            accuracy_storage(m, 3) = 1;
+            accuracy_storage(i, 3) = 1;
         else
-            accuracy_storage(m, 3) = 0;
+            accuracy_storage(i, 3) = 0;
         end
         
         WaitSecs(0.5);
@@ -222,11 +249,18 @@ for i = 1 : trialnum
     end
 end
 
-    if mod(m,50) == 0
-        WaitSecs(120); %2 min break
-    end
+%% Saving User's Results
+cd('Results');
+nameID = char(upper(subject_info(1))); % Take the initials (first cell in subject_info) and make it uppercase so our formatting is consistent. Also convert the cell to a character array (a string)
 
+if ~isdir(nameID)
+	mkdir(nameID);
 end
+
+cd(nameID);
+save Results.mat, result;
+
+cd('../../');  %% Go up to the original directory
 
 Screen('CloseAll');
 
