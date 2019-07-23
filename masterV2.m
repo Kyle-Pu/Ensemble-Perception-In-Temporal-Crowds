@@ -41,6 +41,8 @@ for i = 1 : total_Images
     Screen('Flip', window); % Display text
 end
 
+cd('../'); % Go up a directory, no need to be in the images directory anymore
+
 image_size = size(tmp_bmp);
 w_img =  image_size(2) / 2; % image width
 h_img =  image_size(1) / 2; % image height
@@ -247,13 +249,13 @@ end
 
 %% Saving User's Results
 cd('Results');
-nameID = upper(subject_info.Initials);
+nameID = char(upper(subject_info(1))); % Take the initials (first cell in subject_info) and make it uppercase so our formatting is consistent. Also convert the cell to a character array (a string)
 
 if ~isdir(nameID)
 	mkdir(nameID);
 end
 
-cd nameID;
+cd(nameID);
 save Results.mat, result;
 
 cd('../../');  %% Go up to the original directory

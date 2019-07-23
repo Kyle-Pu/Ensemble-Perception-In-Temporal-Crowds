@@ -25,4 +25,5 @@ Our research experiment is on ensemble perception in temporal crowds with a focu
 - [ ] Resize grid automatically
 - [ ] Place the text automatically (so small screen sizes don't cut it off)!
 - [ ] Randomize the morphs so they don't show the same exact things at the same exact times (ask Alice). This issue also rules out two of the 4 scenes as the outlier (since they're the same) so this is a fault in our experimental design that we addressed that we can describe in our paper.
+- [ ] Saving Results: Save stuff into the result cell!
 
