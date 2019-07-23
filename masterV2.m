@@ -1,7 +1,7 @@
 clear all; close all;
 
 %% Obtaining User Input
-Info = {'Initials','Gender [1=Male,2=Female,3=Other]','Age','Ethnicity', 'Handedness [1=Right,2=Left]'};
+Info = {'Initials', 'Full Name','Gender [1=Male,2=Female,3=Other]','Age','Ethnicity', 'Handedness [1=Right,2=Left]'};
 dlg_title = 'Subject Information';
 num_lines = 1;
 subject_info = inputdlg(Info,dlg_title,num_lines);
@@ -276,8 +276,6 @@ save('SubjectInfo.mat', 'subject_info');
 cd('../../');  %% Go up to the original directory
 
 Screen('CloseAll');
-
-accuracy_storage
 
 function coloredImg = colorMyImage(img)
 	
