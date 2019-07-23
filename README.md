@@ -17,8 +17,8 @@ Our research experiment is on ensemble perception in temporal crowds with a focu
 - [x] Breaks
 - [x] Subject Number (Handled Automatically Now)!
 - [x] Participant Initials
-- [ ] Age
-- [ ] Add gender options
+- [x] Age
+- [x] Add gender options
 - [x] Handedness
 - [ ] Name
 - [ ] Save data in a results folder with their number AND initials
