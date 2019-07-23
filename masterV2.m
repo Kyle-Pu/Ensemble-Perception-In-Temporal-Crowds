@@ -263,7 +263,7 @@ end
 	breakTime = 180; % 3 minute break time	
 
 	while breakTime >= 0
-		Screen('DrawText', window, [num2str(breakTime) 'seconds left of break...', 250, 250]); % Write text to confirm percentage complete
+		Screen('DrawText', window, [num2str(breakTime) ' seconds left of break...', 250, 250]); % Write text to confirm percentage complete
 		Screen('Flip', window); % Display text
 		WaitSecs(1);
 		breakTime = breakTime - 1;
