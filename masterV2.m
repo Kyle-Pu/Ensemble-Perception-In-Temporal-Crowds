@@ -251,6 +251,8 @@ for i = 1 : trialnum
             accuracy_storage(m, 3) = 0;
         end
         
+	accuracy_storage(m, 1) = adjustedVals(1) + "-" + adjustedVals(2) + "-" + adjustedVals(3) + "-" + adjustedVals(4); % Save morphing sequence in the first column for each trial's results
+
         WaitSecs(0.5);
         WaitSecs();
     end
@@ -276,6 +278,9 @@ save('SubjectInfo.mat', 'subject_info');
 cd('../../');  %% Go up to the original directory
 
 Screen('CloseAll');
+
+accuracyStorage
+disp(sum(sum(accuracy_storage == 1)) / 2 / m * 100);
 
 function coloredImg = colorMyImage(img)
 	
