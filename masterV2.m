@@ -60,12 +60,14 @@ xy_rect = [x(:)' - w_img / 2; y(:)' - h_img / 2; x(:)' + w_img / 2; y(:)' + h_im
 num_In_Scene = 4; % The number of images we display in each scene
 
 %% Non-Outlier Images
-lowRange = 7; %the variance number for low variance
-highRange = 20; %the variance number for high variance
+%lowRange = 7; %the variance number for low variance
+%highRange = 20; %the variance number for high variance
 trialnum = 6; %number of images shown in one loop
 round = 300;
 
 result = cell(1, round); % Save user's results in here. Automate later! Right now, it's hard-coded as just 1 triadl
+
+
 
 for m = 1: round
 regImages = randperm(total_Images, 4);  % Generate average morph for each of the 3 regular images in each scene
@@ -78,13 +80,19 @@ outlier = randi(4); %picking which of the four is the outlier
 
 adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
+ 
 
 
 %% Display the Images
 for i = 1 : trialnum
+
+	lowRange = randi([3, 7]); %the variance number for low variance
+ 	highRange = randi([15, 20]); %the variance number for high variance
+
     if low_or_high == 1 %low as outlier
         
         for val = 1 : size(adjustedVals, 2)
+
             adjustedVals(val) = regImages(val) + highRange * i;
         end
         
