@@ -179,10 +179,10 @@ for i = 1 : trialnum
             Screen('Flip', window);
 
             if (x>correct_area_in_image(1) && x<correct_area_in_image(3)) && (y>correct_area_in_image(2) && y<correct_area_in_image(4)) %if the person clicked on the correct outlier
-                accuracy_storage(m, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
+                accuracy_storage(m, 1) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
             else
                 if (x>xy_center(1) && y>xy_center(2) && x<xy_center(3) && y<xy_center(4))
-                    accuracy_storage(m, 2) = 0;%record bad click
+                    accuracy_storage(m, 1) = 0;%record bad click
                 else
                     tf = 0;
                 end
@@ -248,13 +248,11 @@ for i = 1 : trialnum
             end
         end
         if userchoice_variance == low_or_high
-            accuracy_storage(m, 3) = 1;
+            accuracy_storage(m, 2) = 1;
         else
-            accuracy_storage(m, 3) = 0;
+            accuracy_storage(m, 2) = 0;
         end
         
-	accuracy_storage(m, 1) = adjustedVals(1) + "-" + adjustedVals(2) + "-" + adjustedVals(3) + "-" + adjustedVals(4); % Save morphing sequence in the first column for each trial's results
-
         WaitSecs(0.5);
         WaitSecs();
     end
@@ -291,7 +289,6 @@ cd('../../');  %% Go up to the original directory
 
 Screen('CloseAll');
 
-accuracyStorage
 disp(sum(sum(accuracy_storage == 1)) / 2 / m * 100);
 
 function coloredImg = colorMyImage(img)
