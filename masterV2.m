@@ -37,7 +37,11 @@ for i = 1 : total_Images
     tmp_bmp(:,:,4) = Mask_Plain;
     tid(i) = Screen('MakeTexture', window, tmp_bmp);
     Screen('DrawText', window, 'Loading...', x_center, y_center-25); % Write text to confirm loading of images
-    Screen('DrawText', window, [int2str(int16(i*100/147)) '%'], x_center, y_center+25); % Write text to confirm percentage complete
+    Screen('DrawText', window, [int2str(int16(i*100/147)) '%'], x_center, y_center+25); % Write text to confirm percentage complet
+    Screen('DrawText', window, 'Hello! Welcome to the Temporal Crowds Experiment.',x_center-250, y_center) % User instructions page
+    Screen('DrawText',window,'In the following screen, four random faces will be morphed, one of which is an outlier.',x_center-418, y_center+25); 
+    Screen('DrawText',window,'Please identify which of the four faces is an outlier.',x_center-241.5,y_center+50);
+    Screen('DrawText',window,'Then, please specifify whether the variance was "High" or "Low" in the final slide.',x_center-400, y_center+75);   
     Screen('Flip', window); % Display text
 end
 
