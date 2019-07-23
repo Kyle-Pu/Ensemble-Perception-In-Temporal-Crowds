@@ -22,8 +22,6 @@ Our research experiment is on ensemble perception in temporal crowds with a focu
 - [x] Handedness
 - [ ] Name
 - [x] Save data in a results folder with their number AND initials
-- [ ] Resize grid automatically
-- [ ] Place the text automatically (so small screen sizes don't cut it off)!
 - [x] Randomize the morphs so they don't show the same exact things at the same exact times (ask Alice). This issue also rules out two of the 4 scenes as the outlier (since they're the same) so this is a fault in our experimental design that we addressed that we can describe in our paper.
 - [x] Saving Results
 
