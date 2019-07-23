@@ -45,6 +45,8 @@ for i = 1 : total_Images
     Screen('Flip', window); % Display text
 end
 
+WaitSecs(2);
+
 cd('../'); % Go up a directory, no need to be in the images directory anymore
 
 image_size = size(tmp_bmp);
@@ -257,8 +259,16 @@ for i = 1 : trialnum
         WaitSecs();
     end
 end
-    if mod(m, 50) == 0
-        WaitSecs(180); % give 3 min break
+    if mod(m, 2) == 0
+	breakTime = 180; % 3 minute break time	
+
+	while breakTime >= 0
+		Screen('DrawText', window, [num2str(breakTime) 'seconds left of break...', 250, 250]); % Write text to confirm percentage complete
+		Screen('Flip', window); % Display text
+		WaitSecs(1);
+		breakTime = breakTime - 1;
+	end	
+
     end
 end
 
