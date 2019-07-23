@@ -1,7 +1,7 @@
 clear all; close all;
 
 %% Obtaining User Input
-Info = {'Initials','Gender [1=Male,2=Female,3=Other]','Age','Ethnicity', 'Handedness'};
+Info = {'Initials','Binary Gender [1=Male,2=Female]','Age','Ethnicity', 'Handedness'};
 dlg_title = 'Subject Information';
 num_lines = 1;
 subject_info = inputdlg(Info,dlg_title,num_lines);
