@@ -76,8 +76,8 @@ regImages = randperm(total_Images, 4);  % Generate average morph for each of the
 
 %order = randperm(6);  % Random order to display morphs around the average for each of the 3 regular images in each scene
 
-low_or_high = randi(2); %1 = low as outlier 2 = high as outlier
-outlier = randi(4); %picking which of the four is the outlier
+low_or_high = randi(2) %1 = low as outlier 2 = high as outlier
+outlier = randi(4) %picking which of the four is the outlier
 
 adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
@@ -128,16 +128,8 @@ for i = 1 : trialnum
         ShowCursor();
 	SetMouse(5, 5, 0);
 	
-        %% Cole's Part: getting clicks and screen for clicks
+        %% Getting clicks and screen for clicks
         
-        % correct_area_in_image = ... (need to specify for a given randomly
-        % generated crowd, what index the outlier is at -- should be done by
-        % whoever is doing the randomization thingy) -- specify in the first index,
-        % the outer x coordinate of the grid (i.e. the far left or the far right
-        % side if the correct outlier is on the left or right respectively, and in
-        % the second index specify the outer y coordinate of the grid (i.e. the far
-        % bottom and the far top coordinate if the correct outlier is in the top or
-        % bottom respectively)
         size_of_square_image = 302; %enter the size of one of the sides of one of the images/grid squares
         if outlier == 1
             correct_area_in_image = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image]; % top left one
@@ -185,10 +177,10 @@ for i = 1 : trialnum
             Screen('Flip', window);
 
             if (x>correct_area_in_image(1) && x<correct_area_in_image(3)) && (y>correct_area_in_image(2) && y<correct_area_in_image(4)) %if the person clicked on the correct outlier
-                accuracystorage(i, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
+                accuracy_storage(i, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
             else
                 if (x>xy_center(1) && y>xy_center(2) && x<xy_center(3) && y<xy_center(4))
-                    accuracystorage(i, 2) = 0;%record bad click
+                    accuracy_storage(i, 2) = 0;%record bad click
                 else
                     tf = 0;
                 end
