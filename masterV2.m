@@ -45,7 +45,7 @@ for i = 1 : total_Images
     Screen('Flip', window); % Display text
 end
 
-WaitSecs(2);
+WaitSecs(1);
 
 cd('../'); % Go up a directory, no need to be in the images directory anymore
 
@@ -69,7 +69,7 @@ num_In_Scene = 4; % The number of images we display in each scene
 %lowRange = 7; %the variance number for low variance
 %highRange = 20; %the variance number for high variance
 trialnum = 6; %number of images shown in one loop
-round = 5;
+round = 300;
 
 
 for m = 1: round
@@ -259,11 +259,11 @@ for i = 1 : trialnum
         WaitSecs();
     end
 end
-    if mod(m, 2) == 0
+    if mod(m, 50) == 0
 	breakTime = 180; % 3 minute break time	
 
 	while breakTime >= 0
-		Screen('DrawText', window, [num2str(breakTime) ' seconds left of break...', 250, 250]); % Write text to confirm percentage complete
+		Screen('DrawText', window, [num2str(breakTime) ' seconds left of break...'], x_center, y_center); % Write text to confirm percentage complete
 		Screen('Flip', window); % Display text
 		WaitSecs(1);
 		breakTime = breakTime - 1;
