@@ -126,7 +126,7 @@ for i = 1 : trialnum
     if i == 6
 	        
         ShowCursor();
-	SetMouse(5, 5, 0);
+	SetMouse(450, 450, 0);
 	
         %% Getting clicks and screen for clicks
         
@@ -177,10 +177,10 @@ for i = 1 : trialnum
             Screen('Flip', window);
 
             if (x>correct_area_in_image(1) && x<correct_area_in_image(3)) && (y>correct_area_in_image(2) && y<correct_area_in_image(4)) %if the person clicked on the correct outlier
-                accuracy_storage(i, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
+                accuracy_storage(m, 2) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
             else
                 if (x>xy_center(1) && y>xy_center(2) && x<xy_center(3) && y<xy_center(4))
-                    accuracy_storage(i, 2) = 0;%record bad click
+                    accuracy_storage(m, 2) = 0;%record bad click
                 else
                     tf = 0;
                 end
