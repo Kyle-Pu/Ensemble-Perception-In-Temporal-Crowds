@@ -69,8 +69,9 @@ num_In_Scene = 4; % The number of images we display in each scene
 %lowRange = 7; %the variance number for low variance
 %highRange = 20; %the variance number for high variance
 trialnum = 6; %number of images shown in one loop
-round = 2;
+round = 5;
 
+faceNums = zeros(round, 4, 6);
 
 for m = 1: round
 regImages = randperm(total_Images, 4);  % Generate average morph for each of the 3 regular images in each scene
@@ -83,7 +84,6 @@ outlier = randi(4) %picking which of the four is the outlier
 
 adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
- 
 while abs(regImages(1) - regImages(2)) <= 5 || abs(regImages(1) - regImages(3)) <= 5 || abs(regImages(1) - regImages(4)) <= 5 || abs(regImages(2) - regImages(3)) <= 5 || abs(regImages(2) - regImages(4)) <= 5 || abs(regImages(3) - regImages(4)) <= 5
 	regImages = randperm(total_Images, 4);
 end
@@ -118,7 +118,11 @@ for i = 1 : trialnum
         if adjustedVals(k) > total_Images
             adjustedVals(k) = adjustedVals(k) - total_Images;
         end
-    end
+
+	faceNums(m, k, i) = adjustedVals(k);
+
+    end	
+
     HideCursor();
     Screen('DrawTextures', window, tid(adjustedVals), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
     DrawFormattedText(window,'+','center','center',[0 0 0]);
@@ -295,6 +299,23 @@ Screen('CloseAll');
 
 disp("Outlier detection accuracy: " + sum(accuracy_storage(:, 1) == 1) / m * 100 + "% accuracy!");
 disp("Variance direction accuracy: " + sum(accuracy_storage(:, 2) == 1) / m * 100 + "% accuracy!");
+
+standardDevs = zeros(m, 4);
+means = zeros(m, 4);
+
+for rows = 1 : m
+
+	for cols = 1 : 4
+	
+		standardDevs(rows, cols) = std(faceNums(rows, cols, :));		
+		means(rows, cols) = mean(faceNums(rows, cols, :));
+	
+	end
+
+end
+
+standardDevs
+means
 
 function coloredImg = colorMyImage(img)
 	
