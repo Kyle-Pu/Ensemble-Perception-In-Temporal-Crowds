@@ -1,5 +1,15 @@
 clear all; close all;
 
+%% Obtaining User Input
+Info = {'Initials','Gender [1=Male,2=Female,3=Other]','Age','Ethnicity', 'Handedness'};
+dlg_title = 'Subject Information';
+num_lines = 1;
+subject_info = inputdlg(Info,dlg_title,num_lines);
+
+existingData = load('subjectNumber.mat');
+subjectNumber = existingData.subjectNumber + 1;
+save('subjectNumber', 'subjectNumber');
+
 %% Setting Up the Screen
 Screen('Preference', 'SkipSyncTests', 1);
 RandStream.setGlobalStream(RandStream('mt19937ar','seed',sum(100*clock))); % Create a new random stream
@@ -121,7 +131,7 @@ for i = 1 : trialnum
         end
         
         clicking_grid = imread('clickinggrid.png');
-        bluesquare = imread('bluesquare.png');
+        bluesquare = imread('blueSquare.png');
         xy_center = [x_center-size_of_square_image,y_center-size_of_square_image,x_center+size_of_square_image,y_center+size_of_square_image];
         makegrid = Screen('MakeTexture', window, clicking_grid);
         makesquare = Screen('MakeTexture', window, bluesquare);
