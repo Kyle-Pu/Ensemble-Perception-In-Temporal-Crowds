@@ -74,7 +74,7 @@ outlier = randi(4); %picking which of the four is the outlier
 
 adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
-result = cell(1, 1); % Save user's results in here. Automate later! Right now, it's hard-coded as just 1 trial
+result = cell(1, 1); % Save user's results in here. Automate later! Right now, it's hard-coded as just 1 triadl
 
 %% Display the Images
 for i = 1 : trialnum
@@ -252,7 +252,7 @@ end
 %% Saving User's Results
 cd('Results');
 nameID = char(upper(subject_info(1))); % Take the initials (first cell in subject_info) and make it uppercase so our formatting is consistent. Also convert the cell to a character array (a string)
-dirName = num2str(subjectNumber) + nameID;
+dirName = num2str(subjectNumber) + "" + nameID;
 
 if ~isdir(dirName)
 	mkdir(dirName);
