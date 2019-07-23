@@ -263,7 +263,9 @@ end
 end
 
 %% Saving User's Results
-cd('Results');
+if ~isdir('Results')
+    mkdir('Results');
+end
 nameID = char(upper(subject_info(1))); % Take the initials (first cell in subject_info) and make it uppercase so our formatting is consistent. Also convert the cell to a character array (a string)
 dirName = num2str(subjectNumber) + "_" + nameID;
 
