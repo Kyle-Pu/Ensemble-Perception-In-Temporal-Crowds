@@ -3,6 +3,12 @@ Sina Nakhkoob, Alice Zhang, Cole Johnson, Kyle Pu
 
 Our research experiment revolves around ensemble perception in temporal crowds, with a focus on whether or not ensemble perception functions in scene conditions.
 
+
+
+
+
+face numbers, mean, std, which square you clicked
+
 ## To Do
 - [x] Add variance/outlier
 - [x] Adjust the morphing
