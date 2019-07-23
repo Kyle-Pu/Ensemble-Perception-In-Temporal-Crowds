@@ -1,7 +1,7 @@
 clear all; close all;
 
 %% Obtaining User Input
-Info = {'Initials','Binary Gender [1=Male,2=Female]','Age','Ethnicity', 'Handedness'};
+Info = {'Initials','Gender [1=Male,2=Female,3=Other]','Age','Ethnicity', 'Handedness'};
 dlg_title = 'Subject Information';
 num_lines = 1;
 subject_info = inputdlg(Info,dlg_title,num_lines);
@@ -41,8 +41,6 @@ for i = 1 : total_Images
     Screen('Flip', window); % Display text
 end
 
-cd('../');  %% Go up a directory, no need to stay int he images directory any longer
-
 image_size = size(tmp_bmp);
 w_img =  image_size(2) / 2; % image width
 h_img =  image_size(1) / 2; % image height
@@ -73,6 +71,8 @@ low_or_high = randi(2); %1 = low as outlier 2 = high as outlier
 outlier = randi(4); %picking which of the four is the outlier
 
 adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
+
+result = cell(1, 1); % Save user's results in here. Automate later! Right now, it's hard-coded as just 1 trial
 
 %% Display the Images
 for i = 1 : trialnum
@@ -244,6 +244,19 @@ for i = 1 : trialnum
         WaitSecs();
     end
 end
+
+%% Saving User's Results
+cd('Results');
+nameID = upper(subject_info.Initials);
+
+if ~isdir(nameID)
+	mkdir(nameID);
+end
+
+cd nameID;
+save Results.mat, result;
+
+cd('../../');  %% Go up to the original directory
 
 Screen('CloseAll');
 
