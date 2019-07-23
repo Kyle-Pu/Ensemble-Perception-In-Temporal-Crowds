@@ -1,7 +1,7 @@
 clear all; close all;
 
 %% Obtaining User Input
-Info = {'Initials','Gender [1=Male,2=Female,3=Other]','Age','Ethnicity', 'Handedness'};
+Info = {'Initials','Gender [1=Male,2=Female,3=Other]','Age','Ethnicity', 'Handedness [1=Right,2=Left]'};
 dlg_title = 'Subject Information';
 num_lines = 1;
 subject_info = inputdlg(Info,dlg_title,num_lines);
@@ -252,12 +252,13 @@ end
 %% Saving User's Results
 cd('Results');
 nameID = char(upper(subject_info(1))); % Take the initials (first cell in subject_info) and make it uppercase so our formatting is consistent. Also convert the cell to a character array (a string)
+dirName = num2str(subjectNumber) + nameID;
 
-if ~isdir(nameID)
-	mkdir(nameID);
+if ~isdir(dirName)
+	mkdir(dirName);
 end
 
-cd(nameID);
+cd(dirName);
 save Results.mat, result;
 
 cd('../../');  %% Go up to the original directory
@@ -273,6 +274,6 @@ function coloredImg = colorMyImage(img)
 	background = img <= 200;  % Find the pixels of our background (the background is white). This is one channel of a grayscale image
 	blueChannel = img;  % Create a new color layer, we're using blue
 	blueChannel(background) = 255; % Change the new image's background to all white
-	coloredImg = rgb2gray(cat(3, img, img, blueChannel));  % Set the blue channel to activate
+	coloredImg = cat(3, img, img, blueChannel);  % Set the blue channel to activate
 	
 end
