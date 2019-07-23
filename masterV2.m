@@ -1,7 +1,7 @@
 clear all; close all;
 
 %% Obtaining User Input
-Info = {'Initials', 'Full Name','Gender [1=Male,2=Female,3=Other]','Age','Ethnicity', 'Handedness [1=Right,2=Left]'};
+Info = {'Initials', 'Full Name','Binary Gender [1=Male, 2=Female]','Age','Ethnicity', 'Handedness [1=Right, 2=Left]'};
 dlg_title = 'Subject Information';
 num_lines = 1;
 subject_info = inputdlg(Info,dlg_title,num_lines);
@@ -36,12 +36,12 @@ for i = 1 : total_Images
     tmp_bmp = imread([num2str(i) '.PNG']);
     tmp_bmp(:,:,4) = Mask_Plain;
     tid(i) = Screen('MakeTexture', window, tmp_bmp);
-    Screen('DrawText', window, 'Loading...', x_center*0.0097, y_center*1.9178); % Write text to confirm loading of images
+    Screen('DrawText', window, 'Loading...', x_center*0.0069, y_center*1.9178); % Write text to confirm loading of images
     Screen('DrawText', window, [int2str(int16(i*100/147)) '%', 0.0069, y_center*1.9111]); % Write text to confirm percentage complete
     Screen('DrawText', window, 'Hello! Welcome to the Temporal Crowds Experiment.',x_center*0.6528, y_center) % User instructions page
-    Screen('DrawText',window,'In the following screen, four random faces will be morphed, one of which is an outlier.',x_center*0.4194, y_center*0.9474); 
-    Screen('DrawText',window,'Please identify which of the four faces is an outlier.',x_center*0.6653,y_center*0.9);
-    Screen('DrawText',window,'Then, please specifify whether the variance was "High" or "Low" in the final slide.',x_center*0.4444, y_center*0.8571);
+    Screen('DrawText',window,'In the following screen, four random faces will be morphed, one of which is an outlier.',x_center*0.4194, y_center*1.0556); 
+    Screen('DrawText',window,'Please identify which of the four faces is an outlier.',x_center*0.6646,y_center+50);
+    Screen('DrawText',window,'Then, please specifify whether the variance was "High" or "Low" in the final slide.',x_center*0.4444, y_center*1.1667);
     Screen('Flip', window); % Display text
 end
 
@@ -273,7 +273,9 @@ end
 end
 
 %% Saving User's Results
-cd('Results');
+if ~isdir('Results')
+    mkdir('Results');
+end
 nameID = char(upper(subject_info(1))); % Take the initials (first cell in subject_info) and make it uppercase so our formatting is consistent. Also convert the cell to a character array (a string)
 dirName = num2str(subjectNumber) + "_" + nameID;
 
