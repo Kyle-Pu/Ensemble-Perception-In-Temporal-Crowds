@@ -100,8 +100,10 @@ for i = 1 : trialnum
     WaitSecs(0.5);
     
     if i == 6
-        
+	        
         ShowCursor();
+	SetMouse(5, 5, 0);
+	
         %% Cole's Part: getting clicks and screen for clicks
         
         % correct_area_in_image = ... (need to specify for a given randomly
@@ -234,9 +236,9 @@ function coloredImg = colorMyImage(img)
 	%img = 255 - img;  % Invert the colors so the text is now white and the background is now black
         %background = img <= 100; % Find the black background with a threshold of 100
 
-	background = img <= 200;  % Find the pixels of our background (the background is white)
+	background = img <= 200;  % Find the pixels of our background (the background is white). This is one channel of a grayscale image
 	blueChannel = img;  % Create a new color layer, we're using blue
 	blueChannel(background) = 255; % Change the new image's background to all white
-	coloredImg = cat(3, img, img, blueChannel);  % Set the blue channel to activate
+	coloredImg = rgb2gray(cat(3, img, img, blueChannel));  % Set the blue channel to activate
 	
 end
