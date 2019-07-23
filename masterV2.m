@@ -40,7 +40,7 @@ for i = 1 : total_Images
     Screen('DrawText', window, [int2str(int16(i*100/147)) '%', 0.0069, y_center*1.9111]); % Write text to confirm percentage complete
     Screen('DrawText', window, 'Hello! Welcome to the Temporal Crowds Experiment.',x_center*0.6528, y_center) % User instruction page with proportionalized coordinates
     Screen('DrawText',window,'In the following screen, four random faces will be morphed, one of which is an outlier.',x_center*0.4194, y_center*1.0556); 
-    Screen('DrawText',window,'Please identify which of the four faces is an outlier.',x_center*0.6646,y_center+50);
+    Screen('DrawText',window,'Please identify which of the four faces is an outlier.',x_center*0.6646,y_center*1.111);
     Screen('DrawText',window,'Then, please specifify whether the variance was "High" or "Low" in the final slide.',x_center*0.4444, y_center*1.1667);
     Screen('Flip', window); % Display text
 end
