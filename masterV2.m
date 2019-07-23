@@ -1,7 +1,7 @@
 clear all; close all;
 
 %% Obtaining User Input
-Info = {'Initials', 'Full Name','Binary Gender [1=Male, 2=Female]','Age','Ethnicity', 'Handedness [1=Right, 2=Left]'};
+Info = {'Initials', 'Full Name','Gender [1=Male, 2=Female, 3=Other]','Age','Ethnicity', 'Handedness [1=Right, 2=Left]'};
 dlg_title = 'Subject Information';
 num_lines = 1;
 subject_info = inputdlg(Info,dlg_title,num_lines);
@@ -53,7 +53,6 @@ image_size = size(tmp_bmp);
 w_img =  image_size(2) / 2; % image width
 h_img =  image_size(1) / 2; % image height
 
-
 %% Determining Location on Screen to Display Images
 startingX = x_center - w_img / 2;
 startingY = y_center - h_img / 2;
@@ -68,212 +67,225 @@ num_In_Scene = 4; % The number of images we display in each scene
 %% Non-Outlier Images
 %lowRange = 7; %the variance number for low variance
 %highRange = 20; %the variance number for high variance
-trialnum = 6; %number of images shown in one loop
-round = 5;
 
-faceNums = zeros(round, 4, 6);
+trialnum = 6; %number of images shown in each one of the four positions in one loop
+round = 5; % The number of trials. For the real experiment, this will be 300
+
+faceNums = zeros(round, 4, 6);  % Stores all the morph numbers of each image shown in each round (each row is a round, each column corresponds to one square of the 4 in each scene, and each channel represents the image flashed in the sequence)
 
 for m = 1: round
-regImages = randperm(total_Images, 4);  % Generate average morph for each of the 3 regular images in each scene
-%regImages = randperm(total_Images - highRange*trialnum, 4);
+	regImages = randperm(total_Images, 4);  % Generate average morph for each of the 3 regular images in each scene
+	%regImages = randperm(total_Images - highRange*trialnum, 4);
 
-%order = randperm(6);  % Random order to display morphs around the average for each of the 3 regular images in each scene
+	%order = randperm(6);  % Random order to display morphs around the average for each of the 3 regular images in each scene
 
-low_or_high = randi(2) %1 = low as outlier 2 = high as outlier
-outlier = randi(4) %picking which of the four is the outlier
+	low_or_high = randi(2) %1 = low as outlier 2 = high as outlier
+	outlier = randi(4) %picking which of the four is the outlier
 
-adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
+	adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
-while abs(regImages(1) - regImages(2)) <= 5 || abs(regImages(1) - regImages(3)) <= 5 || abs(regImages(1) - regImages(4)) <= 5 || abs(regImages(2) - regImages(3)) <= 5 || abs(regImages(2) - regImages(4)) <= 5 || abs(regImages(3) - regImages(4)) <= 5
-	regImages = randperm(total_Images, 4);
-end
+	while abs(regImages(1) - regImages(2)) <= 5 || abs(regImages(1) - regImages(3)) <= 5 || abs(regImages(1) - regImages(4)) <= 5 || abs(regImages(2) - regImages(3)) <= 5 || abs(regImages(2) - regImages(4)) <= 5 || abs(regImages(3) - regImages(4)) <= 5
+		regImages = randperm(total_Images, 4);
+	end
 
-%% Display the Images
-for i = 1 : trialnum
+	%% Display the Images
+	for i = 1 : trialnum
 
-	lowRange = randi([3, 7]); %the variance number for low variance
- 	highRange = randi([15, 20]); %the variance number for high variance
+	    lowRange = randi([3, 7]); %the variance number for low variance
+ 	    highRange = randi([15, 20]); %the variance number for high variance
 
-    if low_or_high == 1 %low as outlier
-        
-        for val = 1 : size(adjustedVals, 2)
+	    if low_or_high == 1 %low as outlier
+		
+		for val = 1 : size(adjustedVals, 2)
 
-            adjustedVals(val) = regImages(val) + highRange * i;
-        end
-        
-        adjustedVals(outlier) = regImages(outlier) + lowRange * i;
-        
-    else %high as outlier
-        
-        for val = 1 : size(adjustedVals, 2)
-            adjustedVals(val) = regImages(val) + lowRange * i;
-        end
-        
-        adjustedVals(outlier) = regImages(outlier) + highRange * i;
-        
-    end
-    
-    
-    for k = 1:4
-        if adjustedVals(k) > total_Images
-            adjustedVals(k) = adjustedVals(k) - total_Images;
-        end
+		    adjustedVals(val) = regImages(val) + highRange * i;
+		end
+		
+		adjustedVals(outlier) = regImages(outlier) + lowRange * i;
+		
+	    else %high as outlier
+		
+		for val = 1 : size(adjustedVals, 2)
+		    adjustedVals(val) = regImages(val) + lowRange * i;
+		end
+		
+		adjustedVals(outlier) = regImages(outlier) + highRange * i;
+		
+	    end
+	    
+	    
+	    for k = 1:4
+		if adjustedVals(k) > total_Images
+		    adjustedVals(k) = adjustedVals(k) - total_Images;
+		end
 
-	faceNums(m, k, i) = adjustedVals(k);
+		if adjustedVals(k) > 73.5
+			faceNums(m, k, i) = 73.5 - (adjustedVals(k) - 73.5);
+		end
 
-    end	
+		faceNums(m, k, i) = adjustedVals(k);
 
-    HideCursor();
-    Screen('DrawTextures', window, tid(adjustedVals), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
-    DrawFormattedText(window,'+','center','center',[0 0 0]);
-    Screen('Flip', window);
-    WaitSecs(0.2);
-    Screen('Flip', window);
-    WaitSecs(0.1);
-    
-    if i == 6
-	        
-        ShowCursor();
-	SetMouse(450, 450, 0);
-	
-        %% Getting clicks and screen for clicks
-        
-        size_of_square_image = 302; %enter the size of one of the sides of one of the images/grid squares
-        if outlier == 1
-            correct_area_in_image = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image]; % top left one
-        elseif outlier == 2
-            correct_area_in_image = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center]; % bottom left one
-        elseif outlier == 3
-            correct_area_in_image = [x_center, y_center, x_center+size_of_square_image,y_center+size_of_square_image]; % top right one
-        elseif outlier == 4
-            correct_area_in_image = [x_center,y_center-size_of_square_image,x_center+size_of_square_image, y_center]; % bottom right one
-        end
-        
-        clicking_grid = imread('clickinggrid.png');
-        bluesquare = imread('blueSquare.png');
-        xy_center = [x_center-size_of_square_image,y_center-size_of_square_image,x_center+size_of_square_image,y_center+size_of_square_image];
-        makegrid = Screen('MakeTexture', window, clicking_grid);
-        makesquare = Screen('MakeTexture', window, bluesquare);
-        Screen('DrawTextures', window, makegrid, [], xy_center);
-        DrawFormattedText(window,'Please click on the location of the outlier','center',100,[0 0 0]);
-        Screen('Flip', window);
-        square1 = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image];
-        square2 = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center];
-        square3 = [x_center,y_center, x_center+size_of_square_image,y_center+size_of_square_image];
-        square4 = [x_center,y_center-size_of_square_image,x_center+size_of_square_image, y_center];
-        
-        tf = 0;
-        x=0;
-        y=0;
-        
-        while tf == 0
-            [x,y,buttons]=GetMouse(); %gets coordinates of the button press when it is done
-            tf=any(buttons); %sets to 1 if a button was pressed
-            WaitSecs(.01);
-            Screen('DrawTextures', window, makegrid, [], xy_center);
-            DrawFormattedText(window,'Please click on the location of the outlier','center',100,[0 0 0]);
+	    end	
 
-            if (x>square1(1) && x<square1(3) && y>square1(2) && y<square1(4))
-                Screen('DrawTextures', window, makesquare, [], square1);
-            elseif (x>square2(1) && x<square2(3) && y>square2(2) && y<square2(4))
-                Screen('DrawTextures', window, makesquare, [], square2);
-            elseif (x>square3(1) && x<square3(3) && y>square3(2) && y<square3(4))
-                Screen('DrawTextures', window, makesquare, [], square3);
-            elseif (x>square4(1) && x<square4(3) && y>square4(2) && y<square4(4))
-                Screen('DrawTextures', window, makesquare, [], square4);
-            end
-            Screen('Flip', window);
+	    HideCursor();
+	    Screen('DrawTextures', window, tid(adjustedVals), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
+	    DrawFormattedText(window,'+','center','center',[0 0 0]);
+	    Screen('Flip', window);
+	    WaitSecs(0.2);
+	    Screen('Flip', window);
+	    WaitSecs(0.1);
+	    
+	    if i == 6
+			
+		ShowCursor();
+		SetMouse(450, 450, 0);
+		
+		%% Getting clicks and screen for clicks
+		
+		size_of_square_image = 302; %enter the size of one of the sides of one of the images/grid squares
+		if outlier == 1
+		    correct_area_in_image = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image]; % top left one
+		elseif outlier == 2
+		    correct_area_in_image = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center]; % bottom left one
+		elseif outlier == 3
+		    correct_area_in_image = [x_center, y_center, x_center+size_of_square_image,y_center+size_of_square_image]; % top right one
+		elseif outlier == 4
+		    correct_area_in_image = [x_center,y_center-size_of_square_image,x_center+size_of_square_image, y_center]; % bottom right one
+		end
+		
+		clicking_grid = imread('clickinggrid.png');
+		bluesquare = imread('blueSquare.png');
+		xy_center = [x_center-size_of_square_image,y_center-size_of_square_image,x_center+size_of_square_image,y_center+size_of_square_image];
+		makegrid = Screen('MakeTexture', window, clicking_grid);
+		makesquare = Screen('MakeTexture', window, bluesquare);
+		Screen('DrawTextures', window, makegrid, [], xy_center);
+		DrawFormattedText(window,'Please click on the location of the outlier','center',100,[0 0 0]);
+		Screen('Flip', window);
+		square1 = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image];
+		square2 = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center];
+		square3 = [x_center,y_center, x_center+size_of_square_image,y_center+size_of_square_image];
+		square4 = [x_center,y_center-size_of_square_image,x_center+size_of_square_image, y_center];
+		
+		tf = 0;
+		x=0;
+		y=0;
+		
+		while tf == 0
+		    [x,y,buttons]=GetMouse(); %gets coordinates of the button press when it is done
+		    tf=any(buttons); %sets to 1 if a button was pressed
+		    WaitSecs(.01);
+		    Screen('DrawTextures', window, makegrid, [], xy_center);
+		    DrawFormattedText(window,'Please click on the location of the outlier','center',100,[0 0 0]);
 
-            if (x>correct_area_in_image(1) && x<correct_area_in_image(3)) && (y>correct_area_in_image(2) && y<correct_area_in_image(4)) %if the person clicked on the correct outlier
-                accuracy_storage(m, 1) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
-            else
-                if (x>xy_center(1) && y>xy_center(2) && x<xy_center(3) && y<xy_center(4))
-                    accuracy_storage(m, 1) = 0;%record bad click
-                else
-                    tf = 0;
-                end
-            end
-        end
-        WaitSecs(.5);
-        
-        %% Getting click for high/low variance part thingy doob
-        
-        dimensions_of_buttons = [137, 103];
-        xy_high_center = [x_center-dimensions_of_buttons(1), y_center-dimensions_of_buttons(2)-150, x_center+dimensions_of_buttons(1), y_center+dimensions_of_buttons(2)-150];
-        xy_low_center = [x_center-dimensions_of_buttons(1), y_center-dimensions_of_buttons(2)+150, x_center+dimensions_of_buttons(1), y_center+dimensions_of_buttons(2)+150];
-        High_button = rgb2gray(imread('High Button.png'));
-        High_button = High_button(:, :, 1);
-        Low_button = rgb2gray(imread('Low Button.png'));
-        Low_button = Low_button(:, :, 1);
-        highButtonColored = colorMyImage(High_button);
-        lowButtonColored = colorMyImage(Low_button);
-        tff = 0;
-        looping_again = 0;
-        
-        while looping_again == 0
-            xx=0;
-            yy=0;
-            userchoice_variance = 0;
-            
-            while tff == 0
-                DrawFormattedText(window,'Was the variance \n of this outlier set \n high or low?','center',100,[0 0 0]);
-                [xx,yy,buttons]=GetMouse(); %gets coordinates of the button press when it is done
-                
-                if (xx > xy_high_center(1) && xx < xy_high_center(3) && yy > xy_high_center(2) && yy < xy_high_center(4))
-                    makebuttonlayout_high = Screen('MakeTexture', window, highButtonColored);
-                else
-                    makebuttonlayout_high = Screen('MakeTexture', window, High_button);
-                end
-                
-                if (xx > xy_low_center(1) && xx < xy_low_center(3) && yy > xy_low_center(2) && yy < xy_low_center(4))
-                    makebuttonlayout_low = Screen('MakeTexture', window, lowButtonColored);
-                else
-                    makebuttonlayout_low = Screen('MakeTexture', window, Low_button);
-                end
-                
-                Screen('DrawTextures', window, makebuttonlayout_high, [], xy_high_center);
-                Screen('DrawTextures', window, makebuttonlayout_low, [], xy_low_center);
-                Screen('Flip', window);
-                tff=any(buttons); %sets to 1 if a button was pressed
-                WaitSecs(.01);
-            end
-            
-            if (xx > xy_high_center(1) && xx < xy_high_center(3) && yy > xy_high_center(2) && yy < xy_high_center(4))
-                userchoice_variance = 1; % setting userchoise_variance equal to 1 if the high button is pressed
-                looping_again = 1; %breaking out of loop
-                %DrawFormattedText(window,'high was pressed?','center',700,[0 0 0]);
-                %Screen('Flip', window);
-            elseif (xx > xy_low_center(1) && xx < xy_low_center(3) && yy > xy_low_center(2) && yy < xy_low_center(4))
-                userchoice_variance = 2; % setting userchoise_variance equal to 2 if the low button is pressed
-                looping_again = 1; %breaking out of loop
-                %DrawFormattedText(window,'low was pressed?','center',700,[0 0 0]);
-                %Screen('Flip', window);
-            else
-                tff = 0; %going back into the "is the user clicking?" loop once the looping_again while loop is repeated
-                looping_again = 0;
-            end
-        end
-        if userchoice_variance == low_or_high
-            accuracy_storage(m, 2) = 1;
-        else
-            accuracy_storage(m, 2) = 0;
-        end
-        
-        WaitSecs(0.5);
-        WaitSecs();
-    end
-end
-    if mod(m, 50) == 0
-	breakTime = 30; % 3 minute break time	
+		    if (x>square1(1) && x<square1(3) && y>square1(2) && y<square1(4))
+		        Screen('DrawTextures', window, makesquare, [], square1);
+		    elseif (x>square2(1) && x<square2(3) && y>square2(2) && y<square2(4))
+		        Screen('DrawTextures', window, makesquare, [], square2);
+		    elseif (x>square3(1) && x<square3(3) && y>square3(2) && y<square3(4))
+		        Screen('DrawTextures', window, makesquare, [], square3);
+		    elseif (x>square4(1) && x<square4(3) && y>square4(2) && y<square4(4))
+		        Screen('DrawTextures', window, makesquare, [], square4);
+		    end
+		    Screen('Flip', window);
 
-	while breakTime >= 0
-		Screen('DrawText', window, [num2str(breakTime) ' seconds left of break...'], x_center, y_center); % Write text to confirm percentage complete
-		Screen('Flip', window); % Display text
-		WaitSecs(1);
-		breakTime = breakTime - 1;
-	end	
+		    if (x>correct_area_in_image(1) && x<correct_area_in_image(3)) && (y>correct_area_in_image(2) && y<correct_area_in_image(4)) %if the person clicked on the correct outlier
+		        accuracy_storage(m, 1) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
+		    else
+		        if (x>xy_center(1) && y>xy_center(2) && x<xy_center(3) && y<xy_center(4))
+		            accuracy_storage(m, 1) = 0;%record bad click
+		        else
+		            tf = 0;
+		        end
+		    end
+		end
+		
+		WaitSecs(.5);
+		
+		%% Getting click for high/low variance part thingy doob
+		
+		dimensions_of_buttons = [137, 103];
+		xy_high_center = [x_center-dimensions_of_buttons(1), y_center-dimensions_of_buttons(2)-150, x_center+dimensions_of_buttons(1), y_center+dimensions_of_buttons(2)-150];
+		xy_low_center = [x_center-dimensions_of_buttons(1), y_center-dimensions_of_buttons(2)+150, x_center+dimensions_of_buttons(1), y_center+dimensions_of_buttons(2)+150];
+		High_button = rgb2gray(imread('High Button.png'));
+		High_button = High_button(:, :, 1);
+		Low_button = rgb2gray(imread('Low Button.png'));
+		Low_button = Low_button(:, :, 1);
+		highButtonColored = colorMyImage(High_button);
+		lowButtonColored = colorMyImage(Low_button);
+		tff = 0;
+		looping_again = 0;
+		
+		while looping_again == 0
+		   
+		    xx=0;
+		    yy=0;
+		    userchoice_variance = 0;
+		    
+		    while tff == 0
+		        DrawFormattedText(window,'Was the variance \n of this outlier set \n high or low?','center',100,[0 0 0]);
+		        [xx,yy,buttons]=GetMouse(); %gets coordinates of the button press when it is done
+		        
+		        if (xx > xy_high_center(1) && xx < xy_high_center(3) && yy > xy_high_center(2) && yy < xy_high_center(4))
+		            makebuttonlayout_high = Screen('MakeTexture', window, highButtonColored);
+		        else
+		            makebuttonlayout_high = Screen('MakeTexture', window, High_button);
+		        end
+		        
+		        if (xx > xy_low_center(1) && xx < xy_low_center(3) && yy > xy_low_center(2) && yy < xy_low_center(4))
+		            makebuttonlayout_low = Screen('MakeTexture', window, lowButtonColored);
+		        else
+		            makebuttonlayout_low = Screen('MakeTexture', window, Low_button);
+		        end
+		        
+		        Screen('DrawTextures', window, makebuttonlayout_high, [], xy_high_center);
+		        Screen('DrawTextures', window, makebuttonlayout_low, [], xy_low_center);
+		        Screen('Flip', window);
+		        tff=any(buttons); %sets to 1 if a button was pressed
+		        WaitSecs(.01);
+		    end
+		    
+		    if (xx > xy_high_center(1) && xx < xy_high_center(3) && yy > xy_high_center(2) && yy < xy_high_center(4))
+		        userchoice_variance = 1; % setting userchoise_variance equal to 1 if the high button is pressed
+		        looping_again = 1; %breaking out of loop
+		        %DrawFormattedText(window,'high was pressed?','center',700,[0 0 0]);
+		        %Screen('Flip', window);
+		    elseif (xx > xy_low_center(1) && xx < xy_low_center(3) && yy > xy_low_center(2) && yy < xy_low_center(4))
+		        userchoice_variance = 2; % setting userchoise_variance equal to 2 if the low button is pressed
+		        looping_again = 1; %breaking out of loop
+		        %DrawFormattedText(window,'low was pressed?','center',700,[0 0 0]);
+		        %Screen('Flip', window);
+		    else
+		        tff = 0; %going back into the "is the user clicking?" loop once the looping_again while loop is repeated
+		        looping_again = 0;
+		    end
 
-    end
+		end
+
+		if userchoice_variance == low_or_high
+		    accuracy_storage(m, 2) = 1;     % Store whether or not the user chose the correct variance
+		else
+		    accuracy_storage(m, 2) = 0;
+		end
+		
+		WaitSecs(0.5);
+		WaitSecs();
+
+	    end
+
+	end
+	    if mod(m, 50) == 0
+		
+		breakTime = 30; % 3 minute break time	
+
+		while breakTime >= 0
+			Screen('DrawText', window, [num2str(breakTime) ' seconds left of break...'], x_center, y_center); % Write text to confirm percentage complete
+			Screen('Flip', window); % Display text
+			WaitSecs(1);
+			breakTime = breakTime - 1;
+		end	
+
+	    end
+
 end
 
 %% Saving User's Results
@@ -282,8 +294,9 @@ if isdir('Results')
 elseif ~isdir('Results')
     mkdir('Results');
 end
+
 nameID = char(upper(subject_info(1))); % Take the initials (first cell in subject_info) and make it uppercase so our formatting is consistent. Also convert the cell to a character array (a string)
-dirName = num2str(subjectNumber) + "_" + nameID;
+dirName = num2str(subjectNumber) + "_" + nameID; % Name the user's results directory with the format of "[subject number]-[initials]"
 
 if ~isdir(dirName)
 	mkdir(dirName);
@@ -293,29 +306,36 @@ cd(dirName);
 save('Results.mat', 'accuracy_storage');
 save('SubjectInfo.mat', 'subject_info');
 
-cd('../../');  %% Go up to the original directory
-
 Screen('CloseAll');
 
-disp("Outlier detection accuracy: " + sum(accuracy_storage(:, 1) == 1) / m * 100 + "% accuracy!");
-disp("Variance direction accuracy: " + sum(accuracy_storage(:, 2) == 1) / m * 100 + "% accuracy!");
+outlierAccuracy = sum(accuracy_storage(:, 1) == 1) / m * 100;
+varianceAccuracy = sum(accuracy_storage(:, 2) == 1) / m * 100;
+disp(newline + "Outlier detection accuracy: " + num2str(outlierAccuracy) + "% accuracy!");
+disp("Variance direction accuracy: " + num2str(varianceAccuracy) + "% accuracy!");
 
-standardDevs = zeros(m, 4);
-means = zeros(m, 4);
+standardDevs = zeros(m, 4);  % Save standard deviation of each location of each round. There are 4 locations, each of which flashes 6 pictures in each round
+means = zeros(m, 4);  % Save the mean of each location of each round
 
 for rows = 1 : m
 
 	for cols = 1 : 4
 	
-		standardDevs(rows, cols) = std(faceNums(rows, cols, :));		
-		means(rows, cols) = mean(faceNums(rows, cols, :));
+		standardDevs(rows, cols) = std(faceNums(rows, cols, :));	% Take the standard deviation of each sequence shown in each location for every round (there are 4 total locations)
+		means(rows, cols) = mean(faceNums(rows, cols, :));		% Take the mean of each sequence in each location for every round
 	
 	end
 
 end
 
-standardDevs
-means
+standardDevs % Display the standard deviations matrix
+means % Display the mean matrix
+
+save('Outlier_Accuracy_Percentage.mat', 'outlierAccuracy');
+save('Variance_Detection_Accuracy.mat', 'varianceAccuracy');
+save('Standard_Deviations.mat', 'standardDevs');
+save('means.mat', 'means');
+
+cd('../../');  %% Go up to the original directory
 
 function coloredImg = colorMyImage(img)
 	
