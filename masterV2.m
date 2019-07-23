@@ -13,7 +13,7 @@ save('subjectNumber', 'subjectNumber');
 %% Setting Up the Screen
 Screen('Preference', 'SkipSyncTests', 1);
 RandStream.setGlobalStream(RandStream('mt19937ar','seed',sum(100*clock))); % Create a new random stream
-[window, rect] = Screen('OpenWindow', 0); % Opening the screen
+[window, rect] = Screen('OpenWindow', 0, [128 128 128]); % Opening the screen
 Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); % Setting up transparency
 
 %% Window Sizing and Coordinates for Center
@@ -22,7 +22,7 @@ window_h = rect(4);
 x_center = window_w/2;
 y_center = window_h/2;
 
-%% Loading Textures Into tid
+%% Loading Textures Into tid 	
 total_Images = 147; % Number of images in our dataset
 tid = zeros(1, total_Images);  % Holds textures
 
@@ -40,7 +40,7 @@ for i = 1 : total_Images
     Screen('DrawText', window, [int2str(int16(i*100/147)) '%', 0.0069, y_center*1.9111]); % Write text to confirm percentage complete
     Screen('DrawText', window, 'Hello! Welcome to the Temporal Crowds Experiment.',x_center*0.6528, y_center) % User instruction page with proportionalized coordinates
     Screen('DrawText',window,'In the following screen, four random faces will be morphed, one of which is an outlier.',x_center*0.4194, y_center*1.0556); 
-    Screen('DrawText',window,'Please identify which of the four faces is an outlier.',x_center*0.6646,y_center+50);
+    Screen('DrawText',window,'Please identify which of the four faces is an outlier.',x_center*0.6646,y_center*1.111);
     Screen('DrawText',window,'Then, please specifify whether the variance was "High" or "Low" in the final slide.',x_center*0.4444, y_center*1.1667);
     Screen('Flip', window); % Display text
 end
@@ -69,7 +69,7 @@ num_In_Scene = 4; % The number of images we display in each scene
 %lowRange = 7; %the variance number for low variance
 %highRange = 20; %the variance number for high variance
 trialnum = 6; %number of images shown in one loop
-round = 300;
+round = 2;
 
 
 for m = 1: round
@@ -124,6 +124,8 @@ for i = 1 : trialnum
     DrawFormattedText(window,'+','center','center',[0 0 0]);
     Screen('Flip', window);
     WaitSecs(0.2);
+    Screen('Flip', window);
+    WaitSecs(0.1);
     
     if i == 6
 	        
@@ -258,7 +260,7 @@ for i = 1 : trialnum
     end
 end
     if mod(m, 50) == 0
-	breakTime = 180; % 3 minute break time	
+	breakTime = 30; % 3 minute break time	
 
 	while breakTime >= 0
 		Screen('DrawText', window, [num2str(breakTime) ' seconds left of break...'], x_center, y_center); % Write text to confirm percentage complete
@@ -291,7 +293,8 @@ cd('../../');  %% Go up to the original directory
 
 Screen('CloseAll');
 
-disp(sum(sum(accuracy_storage == 1)) / 2 / m * 100);
+disp("Outlier detection accuracy: " + sum(accuracy_storage(:, 1) == 1) / m * 100 + "% accuracy!");
+disp("Variance direction accuracy: " + sum(accuracy_storage(:, 2) == 1) / m * 100 + "% accuracy!");
 
 function coloredImg = colorMyImage(img)
 	
