@@ -65,9 +65,6 @@ num_In_Scene = 4; % The number of images we display in each scene
 trialnum = 6; %number of images shown in one loop
 round = 5;
 
-result = cell(1, round); % Save user's results in here. Automate later! Right now, it's hard-coded as just 1 triadl
-
-
 
 for m = 1: round
 regImages = randperm(total_Images, 4);  % Generate average morph for each of the 3 regular images in each scene
@@ -120,7 +117,7 @@ for i = 1 : trialnum
     Screen('DrawTextures', window, tid(adjustedVals), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
     DrawFormattedText(window,'+','center','center',[0 0 0]);
     Screen('Flip', window);
-    WaitSecs(0.5);
+    WaitSecs(0.2);
     
     if i == 6
 	        
@@ -277,12 +274,14 @@ if ~isdir(dirName)
 end
 
 cd(dirName);
-save('Results.mat', 'result');
+save('Results.mat', 'accuracy_storage');
 save('SubjectInfo.mat', 'subject_info');
 
 cd('../../');  %% Go up to the original directory
 
 Screen('CloseAll');
+
+accuracy_storage
 
 function coloredImg = colorMyImage(img)
 	
