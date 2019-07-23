@@ -63,7 +63,7 @@ num_In_Scene = 4; % The number of images we display in each scene
 %lowRange = 7; %the variance number for low variance
 %highRange = 20; %the variance number for high variance
 trialnum = 6; %number of images shown in one loop
-round = 2;
+round = 5;
 
 result = cell(1, round); % Save user's results in here. Automate later! Right now, it's hard-coded as just 1 triadl
 
@@ -81,7 +81,9 @@ outlier = randi(4); %picking which of the four is the outlier
 adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
  
-
+while abs(regImages(1) - regImages(2)) <= 5 || abs(regImages(1) - regImages(3)) <= 5 || abs(regImages(1) - regImages(4)) <= 5 || abs(regImages(2) - regImages(3)) <= 5 || abs(regImages(2) - regImages(4)) <= 5 || abs(regImages(3) - regImages(4)) <= 5
+	regImages = randperm(total_Images, 4);
+end
 
 %% Display the Images
 for i = 1 : trialnum
