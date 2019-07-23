@@ -63,7 +63,7 @@ num_In_Scene = 4; % The number of images we display in each scene
 %lowRange = 7; %the variance number for low variance
 %highRange = 20; %the variance number for high variance
 trialnum = 6; %number of images shown in one loop
-round = 300;
+round = 2;
 
 result = cell(1, round); % Save user's results in here. Automate later! Right now, it's hard-coded as just 1 triadl
 
@@ -275,7 +275,8 @@ if ~isdir(dirName)
 end
 
 cd(dirName);
-save Results.mat, result;
+save('Results.mat', 'result');
+save('SubjectInfo.mat', 'subject_info');
 
 cd('../../');  %% Go up to the original directory
 
