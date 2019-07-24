@@ -300,6 +300,7 @@ end
 cd(dirName);
 save('Results.mat', 'accuracy_storage');
 save('SubjectInfo.mat', 'subject_info');
+save('FaceMorphs.mat', 'faceNums');
 
 Screen('CloseAll');
 
