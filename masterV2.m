@@ -73,8 +73,13 @@ round = 5; % The number of trials. For the real experiment, this will be 300
 
 faceNums = zeros(round, 4, 6);  % Stores all the morph numbers of each image shown in each round (each row is a round, each column corresponds to one square of the 4 in each scene, and each channel represents the image flashed in the sequence)
 
+lowVariance = [-3 -1 1 3 5];
+highVariance = [-20 -10 2 10 20];
+
+crowds = zeros(4, 6);
+
 for m = 1: round
-	regImages = randperm(total_Images, 4);  % Generate average morph for each of the 3 regular images in each scene
+	regImages = randi(total_Images, 1, 4);  % Generate average morph for each of the 3 regular images in each scene
 	%regImages = randperm(total_Images - highRange*trialnum, 4);
 
 	%order = randperm(6);  % Random order to display morphs around the average for each of the 3 regular images in each scene
@@ -88,47 +93,48 @@ for m = 1: round
 		regImages = randperm(total_Images, 4);
 	end
 
+	for group = 1 : 4
+		
+		if low_or_high == 1 %low as outlier
+			crowds(group, :) = Shuffle([regImages(group) mod(regImages(group) + highVariance, total_Images) + 1]);
+			crowds(outlier, :) = Shuffle([regImages(outlier) mod(regImages(outlier) + lowVariance, total_Images) + 1]);
+		else %high as outlier
+			crowds(group, :) = Shuffle([regImages(group) mod(regImages(group) + lowVariance, total_Images) + 1]);
+			crowds(outlier, :) = Shuffle([regImages(outlier) mod(regImages(outlier) + highVariance, total_Images) + 1]);
+		end
+
+	end
+	
+	
+	
 	%% Display the Images
 	for i = 1 : trialnum
 
-	    lowRange = randi([3, 7]); %the variance number for low variance
- 	    highRange = randi([15, 20]); %the variance number for high variance
-
-	    if low_or_high == 1 %low as outlier
-		
-		for val = 1 : size(adjustedVals, 2)
-
-		    adjustedVals(val) = regImages(val) + highRange * i;
-		end
-		
-		adjustedVals(outlier) = regImages(outlier) + lowRange * i;
-		
-	    else %high as outlier
-		
-		for val = 1 : size(adjustedVals, 2)
-		    adjustedVals(val) = regImages(val) + lowRange * i;
-		end
-		
-		adjustedVals(outlier) = regImages(outlier) + highRange * i;
-		
-	    end
 	    
 	    
-	    for k = 1:4
-		if adjustedVals(k) > total_Images
-		    adjustedVals(k) = adjustedVals(k) - total_Images;
+	    
+	    for k = 1:size(crowds, 1)
+
+		for r = 1 : size(crowds, 2)
+
+		
+			if crowds(k, r) > total_Images
+				crowds(k, r) = mod(crowds(k, r), 147) + 1;
+			end
+
+			if crowds(k, r) > 73.5
+				faceNums(m, k, r) = 73.5 - (crowds(k, r) - 73.5);
+			else
+				faceNums(m, k, r) = crowds(k, r);
+			end
+
+
+
 		end
-
-		if adjustedVals(k) > 73.5
-			faceNums(m, k, i) = 73.5 - (adjustedVals(k) - 73.5);
-		end
-
-		faceNums(m, k, i) = adjustedVals(k);
-
 	    end	
 
 	    HideCursor();
-	    Screen('DrawTextures', window, tid(adjustedVals), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
+	    Screen('DrawTextures', window, tid(crowds(1:4, i)), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 	    DrawFormattedText(window,'+','center','center',[0 0 0]);
 	    Screen('Flip', window);
 	    WaitSecs(0.2);
