@@ -39,7 +39,7 @@ for i = 1 : total_Images
     Screen('DrawText', window, 'Loading...', x_center*0.0069, y_center*1.9178); % Write text to confirm loading of images
     Screen('DrawText', window, [int2str(int16(i*100/147)) '%', 0.0069, y_center*1.9111]); % Write text to confirm percentage complete
     Screen('DrawText', window, 'Hello! Welcome to the Temporal Crowds Experiment.',x_center, y_center) % User instruction page with proportionalized coordinates
-    Screen('DrawText',window,'In the following screen, four flashing faces will be displayed, one of which change expression more than the other three faces.',x_center, y_center - 50); 
+    Screen('DrawText',window,'In the following screen, four flas1hing faces will be displayed, one of which change expression more than the other three faces.',x_center, y_center - 50); 
     Screen('DrawText',window,'Please identify which of the four faces changes the most (is an outlier).',x_center,y_center - 100);
     Screen('DrawText',window,'Then, please specifify how the outlier differed by choosing "High" variance/change or "Low" variance/change in the final slide.',x_center, y_center - 150);
     Screen('Flip', window); % Display text
