@@ -137,7 +137,7 @@ for m = 1: round
 	    Screen('DrawTextures', window, tid(crowds(1:4, i)), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 	    DrawFormattedText(window,'+','center','center',[0 0 0]);
 	    Screen('Flip', window);
-	    WaitSecs(0.5); % Supposed to be 0.2
+	    WaitSecs(0.2); % Supposed to be 0.2
 	    Screen('Flip', window);
 	    WaitSecs(0.1);
 	    
