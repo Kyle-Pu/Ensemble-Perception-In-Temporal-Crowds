@@ -138,12 +138,12 @@ for m = 1: round
 	    if i == 6
 			
 		ShowCursor();
-		SetMouse(450, 450, 0);
+		SetMouse(450, 450, 0); %putting it near the middle of the screen
 		
 		%% Getting clicks and screen for clicks
 		
 		size_of_square_image = 302; %enter the size of one of the sides of one of the images/grid squares
-		if outlier == 1
+		if outlier == 1 %this is all just determining where the user should click depending on which image was the outlier previously
 		    correct_area_in_image = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image]; % top left one
 		elseif outlier == 2
 		    correct_area_in_image = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center]; % bottom left one
@@ -155,14 +155,14 @@ for m = 1: round
 		
 		clicking_grid = imread('clickinggrid.png');
 		bluesquare = imread('blueSquare.png');
-		xy_center = [x_center-size_of_square_image,y_center-size_of_square_image,x_center+size_of_square_image,y_center+size_of_square_image];
+		xy_center = [x_center-size_of_square_image,y_center-size_of_square_image,x_center+size_of_square_image,y_center+size_of_square_image]; %defining the location and size of the grid 
 		makegrid = Screen('MakeTexture', window, clicking_grid);
 		makesquare = Screen('MakeTexture', window, bluesquare);
 		Screen('DrawTextures', window, makegrid, [], xy_center);
 		DrawFormattedText(window,'Please click on the location of the outlier','center',100,[0 0 0]);
 		Screen('Flip', window);
 		square1 = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image];
-		square2 = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center];
+		square2 = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center]; %defining the locations of the squares inside the grid for any screen size
 		square3 = [x_center,y_center, x_center+size_of_square_image,y_center+size_of_square_image];
 		square4 = [x_center,y_center-size_of_square_image,x_center+size_of_square_image, y_center];
 		
@@ -181,20 +181,20 @@ for m = 1: round
 		        Screen('DrawTextures', window, makesquare, [], square1);
 		    elseif (x>square2(1) && x<square2(3) && y>square2(2) && y<square2(4))
 		        Screen('DrawTextures', window, makesquare, [], square2);
-		    elseif (x>square3(1) && x<square3(3) && y>square3(2) && y<square3(4))
+		    elseif (x>square3(1) && x<square3(3) && y>square3(2) && y<square3(4)) %drawing all of the grey squares if the mouse is hovering over a square in the grid
 		        Screen('DrawTextures', window, makesquare, [], square3);
 		    elseif (x>square4(1) && x<square4(3) && y>square4(2) && y<square4(4))
 		        Screen('DrawTextures', window, makesquare, [], square4);
 		    end
 		    Screen('Flip', window);
 
-		    if (x>correct_area_in_image(1) && x<correct_area_in_image(3)) && (y>correct_area_in_image(2) && y<correct_area_in_image(4)) %if the person clicked on the correct outlier
+		    if (x>correct_area_in_image(1) && x<correct_area_in_image(3)) && (y>correct_area_in_image(2) && y<correct_area_in_image(4)) %if the person clicked on the correct outlier location in grid
 		        accuracy_storage(m, 1) = 1;%record correct click (accuracystorage(...,1) will display the numbers of the pictures shown in a single cell)
 		    else
-		        if (x>xy_center(1) && y>xy_center(2) && x<xy_center(3) && y<xy_center(4))
+		        if (x>xy_center(1) && y>xy_center(2) && x<xy_center(3) && y<xy_center(4))% if clicked inside grid but not in the correct outlier location ...
 		            accuracy_storage(m, 1) = 0;%record bad click
 		        else
-		            tf = 0;
+		            tf = 0; %if not inside grid, loop again
 		        end
 		    end
 		end
@@ -203,22 +203,22 @@ for m = 1: round
 		
 		%% Getting click for high/low variance part thingy doob
 		
-		dimensions_of_buttons = [137, 103];
+		dimensions_of_buttons = [137, 103]; %defining size of buttons to be used below
 		xy_high_center = [x_center-dimensions_of_buttons(1), y_center-dimensions_of_buttons(2)-150, x_center+dimensions_of_buttons(1), y_center+dimensions_of_buttons(2)-150];
-		xy_low_center = [x_center-dimensions_of_buttons(1), y_center-dimensions_of_buttons(2)+150, x_center+dimensions_of_buttons(1), y_center+dimensions_of_buttons(2)+150];
+		xy_low_center = [x_center-dimensions_of_buttons(1), y_center-dimensions_of_buttons(2)+150, x_center+dimensions_of_buttons(1), y_center+dimensions_of_buttons(2)+150]; %defining size and location of buttons
 		High_button = rgb2gray(imread('High Button.png'));
 		High_button = High_button(:, :, 1);
 		Low_button = rgb2gray(imread('Low Button.png'));
 		Low_button = Low_button(:, :, 1);
 		highButtonColored = colorMyImage(High_button);
-		lowButtonColored = colorMyImage(Low_button);
+		lowButtonColored = colorMyImage(Low_button); %creating blue colored alternatives using below function colorMyImage()
 		tff = 0;
 		looping_again = 0;
 		
 		while looping_again == 0
 		   
 		    xx=0;
-		    yy=0;
+		    yy=0; %initialization of clicking vars
 		    userchoice_variance = 0;
 		    
 		    while tff == 0
@@ -228,7 +228,7 @@ for m = 1: round
 		        if (xx > xy_high_center(1) && xx < xy_high_center(3) && yy > xy_high_center(2) && yy < xy_high_center(4))
 		            makebuttonlayout_high = Screen('MakeTexture', window, highButtonColored);
 		        else
-		            makebuttonlayout_high = Screen('MakeTexture', window, High_button);
+		            makebuttonlayout_high = Screen('MakeTexture', window, High_button); %this while loop is just getting the location of the mouse hover and if it is over one of the buttons turning it blue 
 		        end
 		        
 		        if (xx > xy_low_center(1) && xx < xy_low_center(3) && yy > xy_low_center(2) && yy < xy_low_center(4))
@@ -240,20 +240,16 @@ for m = 1: round
 		        Screen('DrawTextures', window, makebuttonlayout_high, [], xy_high_center);
 		        Screen('DrawTextures', window, makebuttonlayout_low, [], xy_low_center);
 		        Screen('Flip', window);
-		        tff=any(buttons); %sets to 1 if a button was pressed
+		        tff=any(buttons); %sets to 1 if a button was pressed and thus breaks loop
 		        WaitSecs(.01);
 		    end
 		    
 		    if (xx > xy_high_center(1) && xx < xy_high_center(3) && yy > xy_high_center(2) && yy < xy_high_center(4))
 		        userchoice_variance = 1; % setting userchoise_variance equal to 1 if the high button is pressed
 		        looping_again = 1; %breaking out of loop
-		        %DrawFormattedText(window,'high was pressed?','center',700,[0 0 0]);
-		        %Screen('Flip', window);
 		    elseif (xx > xy_low_center(1) && xx < xy_low_center(3) && yy > xy_low_center(2) && yy < xy_low_center(4))
 		        userchoice_variance = 2; % setting userchoise_variance equal to 2 if the low button is pressed
 		        looping_again = 1; %breaking out of loop
-		        %DrawFormattedText(window,'low was pressed?','center',700,[0 0 0]);
-		        %Screen('Flip', window);
 		    else
 		        tff = 0; %going back into the "is the user clicking?" loop once the looping_again while loop is repeated
 		        looping_again = 0;
@@ -261,19 +257,18 @@ for m = 1: round
 
 		end
 
-		if userchoice_variance == low_or_high
-		    accuracy_storage(m, 2) = 1;     % Store whether or not the user chose the correct variance
+		if userchoice_variance == low_or_high %if user choice is correct
+		    accuracy_storage(m, 2) = 1;     % Store whether or not the user chose the correct variance (1 - yes, 0 - no)
 		else
-		    accuracy_storage(m, 2) = 0;
+		    accuracy_storage(m, 2) = 0; 
 		end
 		
 		WaitSecs(0.5);
-		WaitSecs();
 
 	    end
 
 	end
-	    if mod(m, 50) == 0 && m ~= round
+	    if mod(m, 50) == 0 && m ~= round %if the user has gone through 50 loops since last breaking or starting...
 		
 		breakTime = 60; % 1 minute break time	
 
@@ -328,10 +323,10 @@ for rows = 1 : m
 end
 
 standardDevs % Display the standard deviations matrix
-means % Display the mean matrix
+means % Display the mean matrix to consol
 
 save('Outlier_Accuracy_Percentage.mat', 'outlierAccuracy');
-save('Variance_Detection_Accuracy.mat', 'varianceAccuracy');
+save('Variance_Detection_Accuracy.mat', 'varianceAccuracy'); %saving all the data to files in folder for user
 save('Standard_Deviations.mat', 'standardDevs');
 save('means.mat', 'means');
 
