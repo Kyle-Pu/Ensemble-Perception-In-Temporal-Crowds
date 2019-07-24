@@ -78,6 +78,11 @@ highVariance = [-40 -20 15  35 55];
 
 crowds = zeros(4, 6);
 
+Screen('Flip', window);
+DrawFormattedText(window,'+','center','center',[0 0 0]);
+Screen('Flip', window);
+WaitSecs(0.5);
+
 for m = 1: round
 	regImages = randi(total_Images, 1, 4);  % Generate average morph for each of the 3 regular images in each scene
 	%regImages = randperm(total_Images - highRange*trialnum, 4);
@@ -137,8 +142,8 @@ for m = 1: round
 	    Screen('DrawTextures', window, tid(crowds(1:4, i)), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 	    DrawFormattedText(window,'+','center','center',[0 0 0]);
 	    Screen('Flip', window);
-	    DrawFormattedText(window,'+','center','center',[0 0 0]);
 	    WaitSecs(0.2); % Supposed to be 0.2
+	    DrawFormattedText(window,'+','center','center',[0 0 0]);
 	    Screen('Flip', window);
 	    DrawFormattedText(window,'+','center','center',[0 0 0]);
 	    WaitSecs(0.1);
