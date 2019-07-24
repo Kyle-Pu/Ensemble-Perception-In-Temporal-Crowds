@@ -273,9 +273,9 @@ for m = 1: round
 	    end
 
 	end
-	    if mod(m, 50) == 0
+	    if mod(m, 50) == 0 && m ~= round
 		
-		breakTime = 30; % 3 minute break time	
+		breakTime = 60; % 1 minute break time	
 
 		while breakTime >= 0
 			Screen('DrawText', window, [num2str(breakTime) ' seconds left of break...'], x_center, y_center); % Write text to confirm percentage complete
