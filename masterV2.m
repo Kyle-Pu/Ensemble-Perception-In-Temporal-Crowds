@@ -69,12 +69,12 @@ num_In_Scene = 4; % The number of images we display in each scene
 %highRange = 20; %the variance number for high variance
 
 trialnum = 6; %number of images shown in each one of the four positions in one loop
-round = 5; % The number of trials. For the real experiment, this will be 300
+round = 20; % The number of trials. For the real experiment, this will be 300
 
 faceNums = zeros(round, 4, 6);  % Stores all the morph numbers of each image shown in each round (each row is a round, each column corresponds to one square of the 4 in each scene, and each channel represents the image flashed in the sequence)
 
 lowVariance = [-3 -1 1 3 5];
-highVariance = [-20 -10 2 10 20];
+highVariance = [-40 -20 15  35 55];
 
 crowds = zeros(4, 6);
 
@@ -137,7 +137,7 @@ for m = 1: round
 	    Screen('DrawTextures', window, tid(crowds(1:4, i)), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 	    DrawFormattedText(window,'+','center','center',[0 0 0]);
 	    Screen('Flip', window);
-	    WaitSecs(0.2);
+	    WaitSecs(0.5); % Supposed to be 0.2
 	    Screen('Flip', window);
 	    WaitSecs(0.1);
 	    
