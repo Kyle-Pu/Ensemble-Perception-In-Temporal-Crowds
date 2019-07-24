@@ -69,7 +69,7 @@ num_In_Scene = 4; % The number of images we display in each scene
 %highRange = 20; %the variance number for high variance
 
 trialnum = 6; %number of images shown in each one of the four positions in one loop
-round = 20; % The number of trials. For the real experiment, this will be 300
+round = 300; % The number of trials. For the real experiment, this will be 300
 
 faceNums = zeros(round, 4, 6);  % Stores all the morph numbers of each image shown in each round (each row is a round, each column corresponds to one square of the 4 in each scene, and each channel represents the image flashed in the sequence)
 
