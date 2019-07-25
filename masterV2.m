@@ -32,6 +32,8 @@ cd('Face_Stimuli');
 Mask_Plain = imread('mask.png');
 Mask_Plain = 255 - Mask_Plain(:, :, 1); % Only need one color channel of a grayscale image since all channels are the same
 
+
+%% Instructions and Loading
 for i = 1 : total_Images
     tmp_bmp = imread([num2str(i) '.PNG']);
     tmp_bmp(:,:,4) = Mask_Plain;
