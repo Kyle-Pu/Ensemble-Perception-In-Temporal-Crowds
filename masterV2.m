@@ -92,7 +92,7 @@ for m = 1: round
 	%order = randperm(6);  % Random order to display morphs around the average for each of the 3 regular images in each scene
 
 	low_or_high = randi(2) %1 = low as outlier 2 = high as outlier
-	outlier = randi(4) %picking which of the four is the outlier
+	outlier = 4; %picking which of the four is the outlier
 
 	adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
@@ -159,13 +159,13 @@ for m = 1: round
 		
 		size_of_square_image = 302; %enter the size of one of the sides of one of the images/grid squares
 		if outlier == 1 %this is all just determining where the user should click depending on which image was the outlier previously
-		    correct_area_in_image = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image]; % top left one
+		    correct_area_in_image = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center]; % bottom left one		    
 		elseif outlier == 2
-		    correct_area_in_image = [x_center-size_of_square_image,y_center-size_of_square_image, x_center, y_center]; % bottom left one
+		    correct_area_in_image = [x_center-size_of_square_image, y_center, x_center, y_center+size_of_square_image]; % top left one
 		elseif outlier == 3
-		    correct_area_in_image = [x_center, y_center, x_center+size_of_square_image,y_center+size_of_square_image]; % top right one
-		elseif outlier == 4
 		    correct_area_in_image = [x_center,y_center-size_of_square_image,x_center+size_of_square_image, y_center]; % bottom right one
+		elseif outlier == 4
+		    correct_area_in_image = [x_center, y_center, x_center+size_of_square_image,y_center+size_of_square_image]; % top right one
 		end
 		
 		clicking_grid = imread('clickinggrid.png');
