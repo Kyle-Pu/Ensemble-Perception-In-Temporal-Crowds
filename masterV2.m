@@ -71,7 +71,7 @@ num_In_Scene = 4; % The number of images we display in each scene
 %highRange = 20; %the variance number for high variance
 
 trialnum = 6; %number of images shown in each one of the four positions in one loop
-round = 300; % The number of trials. For the real experiment, this will be 300
+round = 5; % The number of trials. For the real experiment, this will be 300
 
 faceNums = zeros(round, 4, 6);  % Stores all the morph numbers of each image shown in each round (each row is a round, each column corresponds to one square of the 4 in each scene, and each channel represents the image flashed in the sequence)
 
@@ -91,7 +91,7 @@ for m = 1: round
 
 	%order = randperm(6);  % Random order to display morphs around the average for each of the 3 regular images in each scene
 
-	low_or_high = randi(2) %1 = low as outlier 2 = high as outlier
+	low_or_high = randi(2); %1 = low as outlier 2 = high as outlier
 	outlier = randi(4); %picking which of the four is the outlier
 
 	adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
@@ -260,10 +260,12 @@ for m = 1: round
 		    end
 		    
 		    if (xx > xy_high_center(1) && xx < xy_high_center(3) && yy > xy_high_center(2) && yy < xy_high_center(4))
-		        userchoice_variance = 1; % setting userchoise_variance equal to 1 if the high button is pressed
+		        %high as outlier
+                userchoice_variance = 2; % setting userchoise_variance equal to 1 if the high button is pressed
 		        looping_again = 1; %breaking out of loop
 		    elseif (xx > xy_low_center(1) && xx < xy_low_center(3) && yy > xy_low_center(2) && yy < xy_low_center(4))
-		        userchoice_variance = 2; % setting userchoise_variance equal to 2 if the low button is pressed
+		        %low as outlier
+                userchoice_variance = 1; % setting userchoise_variance equal to 2 if the low button is pressed
 		        looping_again = 1; %breaking out of loop
 		    else
 		        tff = 0; %going back into the "is the user clicking?" loop once the looping_again while loop is repeated
