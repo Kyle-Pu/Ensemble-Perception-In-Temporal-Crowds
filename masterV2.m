@@ -92,7 +92,7 @@ for m = 1: round
 	%order = randperm(6);  % Random order to display morphs around the average for each of the 3 regular images in each scene
 
 	low_or_high = randi(2) %1 = low as outlier 2 = high as outlier
-	outlier = 4; %picking which of the four is the outlier
+	outlier = randi(4); %picking which of the four is the outlier
 
 	adjustedVals = zeros(1, 4); % Initialize outside loop so MATLAB doesn't have to copy values and resize the matrix each iteration
 
