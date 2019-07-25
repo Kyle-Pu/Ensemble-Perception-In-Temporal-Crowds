@@ -71,7 +71,7 @@ num_In_Scene = 4; % The number of images we display in each scene
 %highRange = 20; %the variance number for high variance
 
 trialnum = 6; %number of images shown in each one of the four positions in one loop
-round = 50; % The number of trials. For the real experiment, this will be 300
+round = 100; % The number of trials. For the real experiment, this will be 300
 
 faceNums = zeros(round, 4, 6);  % Stores all the morph numbers of each image shown in each round (each row is a round, each column corresponds to one square of the 4 in each scene, and each channel represents the image flashed in the sequence)
 
@@ -144,7 +144,7 @@ for m = 1: round
 	    Screen('DrawTextures', window, tid(crowds(1:4, i)), [], xy_rect);  %% Use the default source and use our xy_rect matrix for the destination of the images
 	    DrawFormattedText(window,'+','center','center',[0 0 0]);
 	    Screen('Flip', window);
-	    WaitSecs(0.3); % Supposed to be 0.2
+	    WaitSecs(0.2); % Supposed to be 0.2
 	    DrawFormattedText(window,'+','center','center',[0 0 0]);
 	    Screen('Flip', window);
 	    DrawFormattedText(window,'+','center','center',[0 0 0]);
@@ -305,6 +305,7 @@ if isdir('Results')
     cd('Results');
 elseif ~isdir('Results')
     mkdir('Results');
+    cd('Results');
 end
 
 nameID = char(upper(subject_info(1))); % Take the initials (first cell in subject_info) and make it uppercase so our formatting is consistent. Also convert the cell to a character array (a string)
