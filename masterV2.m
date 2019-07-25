@@ -83,7 +83,7 @@ crowds = zeros(4, 6);
 Screen('Flip', window);
 DrawFormattedText(window,'+','center','center',[0 0 0]);
 Screen('Flip', window);
-WaitSecs(0.5);
+WaitSecs(1);
 
 for m = 1: round
 	regImages = randi(total_Images, 1, 4);  % Generate average morph for each of the 3 regular images in each scene
