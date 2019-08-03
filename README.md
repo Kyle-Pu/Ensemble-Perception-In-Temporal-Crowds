@@ -1,5 +1,5 @@
 # A Novel Research Paradigm in Ensemble-Perception-In-Temporal-Crowds
-Sina Nakhkoob, Alice Zhang, Cole Johnson, Kyle Pu
+Developed and authored by Johnson, Cole; Nakhkoob, Sina; Pu, Kyle; Zhang, Jinyang
 
 Our research experiment revolves around ensemble perception in temporal crowds, with a focus on whether or not ensemble perception functions in scene conditions.
 
